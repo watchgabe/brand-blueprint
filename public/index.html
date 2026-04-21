@@ -822,6 +822,7 @@ let docGenerated = false;
 let isLoading = false;
 let docText = '';
 let savedChatMessages = [];
+let sessionId = localStorage.getItem(SESSION_KEY + '_sid') || crypto.randomUUID();
 
 const chatWindow = document.getElementById('chat-window');
 const userInput = document.getElementById('user-input');
@@ -837,11 +838,14 @@ function saveSession() {
     localStorage.setItem(SESSION_KEY, JSON.stringify({
       history, questionCount, docGenerated, docText, savedChatMessages, savedAt: Date.now()
     }));
+    localStorage.setItem(SESSION_KEY + '_sid', sessionId);
   } catch(e) {}
 }
 
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY + '_sid');
+  sessionId = crypto.randomUUID();
 }
 
 function showResumeBanner(savedAt) {
@@ -1015,14 +1019,17 @@ document.getElementById('download-btn').addEventListener('click', function() {
 
 // ── SUPABASE SAVE ─────────────────────────────────────────────────────────────
 
-async function saveToSupabase(doc, chatHistory) {
-  const firstLine = doc.split('\n')[0] || '';
-  const clientName = firstLine.replace("'S BRAND BLUEPRINT", '').replace("'S BRAND BLUEPRINT", '').trim();
+async function saveToSupabase(chatHistory, doc) {
+  let clientName = null;
+  if (doc) {
+    const firstLine = doc.split('\n')[0] || '';
+    clientName = firstLine.replace(/[''\u2019]S BRAND BLUEPRINT/i, '').trim() || null;
+  }
   try {
     await fetch('/api/save-blueprint', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clientName, blueprintText: doc, chatHistory }),
+      body: JSON.stringify({ sessionId, clientName, blueprintText: doc || null, chatHistory }),
     });
   } catch(e) {}
 }
@@ -1061,7 +1068,7 @@ async function sendMessage(text) {
       addMessage('coach', '', true);
       if (extracted.after) addMessage('coach', extracted.after);
       renderDoc(extracted.doc);
-      saveToSupabase(extracted.doc, history);
+      saveToSupabase(history, extracted.doc);
       docGenerated = true;
       questionCount = 19;
       updateProgress();
@@ -1072,6 +1079,7 @@ async function sendMessage(text) {
     } else {
       addMessage('coach', reply);
       history.push({ role: 'assistant', content: reply });
+      saveToSupabase(history);
       sendBtn.disabled = false;
       userInput.focus();
     }

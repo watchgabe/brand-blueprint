@@ -4,22 +4,26 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { clientName, blueprintText, chatHistory } = req.body;
+    const { sessionId, clientName, blueprintText, chatHistory } = req.body;
 
-    const response = await fetch(`${process.env.SUPABASE_URL}/rest/v1/blueprints`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': process.env.SUPABASE_SERVICE_KEY,
-        'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
-        'Prefer': 'return=minimal',
-      },
-      body: JSON.stringify({
-        client_name: clientName,
-        blueprint_text: blueprintText,
-        chat_history: chatHistory,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.SUPABASE_URL}/rest/v1/blueprints?on_conflict=session_id`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': process.env.SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+          'Prefer': 'resolution=merge-duplicates,return=minimal',
+        },
+        body: JSON.stringify({
+          session_id: sessionId,
+          client_name: clientName || null,
+          blueprint_text: blueprintText || null,
+          chat_history: chatHistory,
+        }),
+      }
+    );
 
     if (!response.ok) {
       const err = await response.text();
