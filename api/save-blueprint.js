@@ -4,7 +4,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { sessionId, clientName, blueprintText, chatHistory } = req.body;
+    const { sessionId, clientName, email, blueprintText, chatHistory } = req.body;
 
     const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
     const response = await fetch(
@@ -20,6 +20,7 @@ module.exports = async function handler(req, res) {
         body: JSON.stringify({
           session_id: sessionId,
           client_name: clientName || null,
+          email: email || null,
           blueprint_text: blueprintText || null,
           chat_history: chatHistory,
         }),

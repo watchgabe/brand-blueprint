@@ -501,6 +501,22 @@
     margin-bottom: 1.75rem;
   }
 
+  #email-input-field {
+    width: 100%;
+    padding: 13px 15px;
+    font-size: 15px;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: white;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  #email-input-field:focus { border-color: var(--accent); }
+  #email-input-field::placeholder { color: var(--ink-muted); }
+
   #name-input-field {
     width: 100%;
     padding: 13px 15px;
@@ -556,9 +572,10 @@
 
     <div id="name-screen">
       <h2>Build your brand<br>from the <em>inside out.</em></h2>
-      <p>Before we begin — what's your name?</p>
-      <input id="name-input-field" type="text" placeholder="Your first name" autocomplete="given-name" />
-      <button id="name-submit">Let's begin</button>
+      <p>Before we begin — what's your name and email? Your email lets you pick up where you left off if you need to step away.</p>
+      <input id="name-input-field" type="text" placeholder="Your first name" autocomplete="given-name" style="margin-bottom:8px;" />
+      <input id="email-input-field" type="email" placeholder="Your email address" autocomplete="email" />
+      <button id="name-submit" style="margin-top:10px;">Let's begin</button>
     </div>
 
     <div id="chat-intro" class="chat-intro" style="display:none;">
@@ -892,6 +909,7 @@ let isLoading = false;
 let docText = '';
 let savedChatMessages = [];
 let clientName = localStorage.getItem(SESSION_KEY + '_name') || '';
+let clientEmail = localStorage.getItem(SESSION_KEY + '_email') || '';
 let sessionId = localStorage.getItem(SESSION_KEY + '_sid') || crypto.randomUUID();
 
 const chatWindow = document.getElementById('chat-window');
@@ -910,6 +928,7 @@ function saveSession() {
     }));
     localStorage.setItem(SESSION_KEY + '_sid', sessionId);
     localStorage.setItem(SESSION_KEY + '_name', clientName);
+    localStorage.setItem(SESSION_KEY + '_email', clientEmail);
   } catch(e) {}
 }
 
@@ -917,8 +936,10 @@ function clearSession() {
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(SESSION_KEY + '_sid');
   localStorage.removeItem(SESSION_KEY + '_name');
+  localStorage.removeItem(SESSION_KEY + '_email');
   sessionId = crypto.randomUUID();
   clientName = '';
+  clientEmail = '';
 }
 
 function showChat() {
@@ -1111,7 +1132,7 @@ async function saveToSupabase(chatHistory, doc) {
     await fetch('/api/save-blueprint', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId, clientName: clientName || null, blueprintText: doc || null, chatHistory }),
+      body: JSON.stringify({ sessionId, clientName: clientName || null, email: clientEmail || null, blueprintText: doc || null, chatHistory }),
     });
   } catch(e) {}
 }
@@ -1282,18 +1303,58 @@ sendBtn.addEventListener('click', function() {
 
 // Name screen handler
 document.getElementById('name-submit').addEventListener('click', submitName);
-document.getElementById('name-input-field').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') submitName();
-});
+document.getElementById('name-input-field').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('email-input-field').focus(); });
+document.getElementById('email-input-field').addEventListener('keydown', function(e) { if (e.key === 'Enter') submitName(); });
 
-function submitName() {
-  const val = document.getElementById('name-input-field').value.trim();
-  if (!val) { document.getElementById('name-input-field').focus(); return; }
-  clientName = val;
+async function submitName() {
+  const nameVal = document.getElementById('name-input-field').value.trim();
+  const emailVal = document.getElementById('email-input-field').value.trim();
+  if (!nameVal) { document.getElementById('name-input-field').focus(); return; }
+  if (!emailVal) { document.getElementById('email-input-field').focus(); return; }
+
+  clientName = nameVal;
+  clientEmail = emailVal;
   localStorage.setItem(SESSION_KEY + '_name', clientName);
-  saveToSupabase([], null);
-  showChat();
-  init();
+  localStorage.setItem(SESSION_KEY + '_email', clientEmail);
+
+  const btn = document.getElementById('name-submit');
+  btn.textContent = 'Loading...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/resume-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: clientEmail }),
+    });
+    const { session } = await res.json();
+
+    if (session && session.chat_history && session.chat_history.length > 0 && !session.blueprint_text) {
+      // Existing in-progress session — restore it
+      sessionId = session.session_id;
+      history = session.chat_history;
+      savedChatMessages = [];
+      questionCount = history.filter(m => m.role === 'user').length;
+      docGenerated = false;
+      localStorage.setItem(SESSION_KEY + '_sid', sessionId);
+      saveSession();
+      updateProgress();
+      showChat();
+      history.forEach(function(m) { addMessage(m.role === 'user' ? 'user' : 'coach', m.content); });
+      userInput.disabled = false;
+      sendBtn.disabled = false;
+      userInput.focus();
+    } else {
+      // No session or already completed — start fresh
+      saveToSupabase([], null);
+      showChat();
+      init();
+    }
+  } catch(e) {
+    saveToSupabase([], null);
+    showChat();
+    init();
+  }
 }
 
 // Check for existing session on load
