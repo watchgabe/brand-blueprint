@@ -1107,16 +1107,11 @@ document.getElementById('download-btn').addEventListener('click', function() {
 // ── SUPABASE SAVE ─────────────────────────────────────────────────────────────
 
 async function saveToSupabase(chatHistory, doc) {
-  let clientName = null;
-  if (doc) {
-    const firstLine = doc.split('\n')[0] || '';
-    clientName = firstLine.replace(/[''\u2019]S BRAND BLUEPRINT/i, '').trim() || null;
-  }
   try {
     await fetch('/api/save-blueprint', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId, clientName, blueprintText: doc || null, chatHistory }),
+      body: JSON.stringify({ sessionId, clientName: clientName || null, blueprintText: doc || null, chatHistory }),
     });
   } catch(e) {}
 }
