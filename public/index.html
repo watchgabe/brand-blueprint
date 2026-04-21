@@ -254,6 +254,50 @@
   #send-btn:active { transform: scale(0.97); }
   #send-btn:disabled { opacity: 0.35; cursor: not-allowed; background: var(--ink); }
 
+  #mic-btn {
+    width: 36px; height: 36px;
+    background: transparent;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  #mic-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+  #mic-btn.listening {
+    background: #fee2e2;
+    border-color: #ef4444;
+    animation: mic-pulse 1.5s infinite;
+  }
+  @keyframes mic-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+  }
+
+  #resume-banner {
+    background: var(--accent-light);
+    border: 0.5px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  #resume-banner button {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  #resume-yes { background: var(--ink); color: var(--cream); border: none; margin-right: 8px; }
+  #resume-no { background: transparent; border: 0.5px solid var(--border-strong); color: var(--ink-soft); }
+
   /* RIGHT PANEL */
   .right-panel {
     padding: 3rem 3rem 2rem;
@@ -442,7 +486,7 @@
 
 <header>
   <div class="wordmark">
-    <span class="wordmark-brand">FSCreative</span>
+    <img src="https://watchgabe.com/wp-content/uploads/2025/06/Dark-Orange-No-TM@4x.png" alt="FSCreative" style="height:22px;width:auto;">
     <div class="wordmark-sep"></div>
     <span class="wordmark-product">Brand Blueprint</span>
   </div>
@@ -454,7 +498,7 @@
   <div class="left-panel">
     <div class="chat-intro">
       <h1>Build your brand<br>from the <em>inside out.</em></h1>
-      <p>This is the first step in our work together. Answer honestly — the more specific you are, the more useful this becomes for both of us.</p>
+      <p>Answer honestly — the more specific you are, the stronger your document will be. This is yours to keep.</p>
     </div>
 
     <div id="chat-window"></div>
@@ -463,7 +507,10 @@
       <textarea id="user-input" placeholder="Type your reply here..." disabled></textarea>
       <div class="input-footer">
         <span class="input-hint">Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line</span>
-        <button id="send-btn" disabled>Send</button>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button id="mic-btn" title="Speak your answer">🎤</button>
+          <button id="send-btn" disabled>Send</button>
+        </div>
       </div>
     </div>
   </div>
@@ -506,7 +553,7 @@
     <div class="about-section">
       <h3>What this is for.</h3>
       <p>The Brand Blueprint gives you a permanent document that defines who you are, what you stand for, who you serve, and how to communicate it — clearly and consistently.</p>
-      <p>It's also how I get up to speed on you before we start working together. Every answer you give here informs how I show up as your strategist.</p>
+      <p>This document is yours — to reference, refine, and build from as your brand grows. Every answer you give here shapes your north star.</p>
       <p>Set aside 45 minutes. Vague answers produce vague results. Give it everything.</p>
     </div>
 
@@ -524,13 +571,15 @@
 </main>
 
 <script>
-const SYSTEM_PROMPT = `You are the Brand Blueprint Coach for FSCreative — a personal brand strategist who helps content creators build magnetic, die-hard personal brands. You are working on behalf of Gabe, the founder of FSCreative. Your job is twofold: to give the client full clarity on who they are and what their brand stands for, and to transfer that clarity to Gabe so he can hit the ground running as their strategist.
+const SESSION_KEY = 'brand_blueprint_session';
+
+const SYSTEM_PROMPT = `You are the Brand Blueprint Coach for FSCreative — a personal brand strategist who helps content creators build magnetic, die-hard personal brands. Your job is to give the client full clarity on who they are and what their brand stands for, and to synthesise that clarity into a permanent document they'll reference for years.
 
 You guide clients through a structured discovery process — one question at a time, no exceptions — and synthesise their answers into a fully personalised Brand Blueprint: their permanent north star for every piece of content, every strategic decision, and every brand-building move they make.
 
 Your voice is sharp, direct, and warm — never corporate, never preachy, never over-explained. You speak with conviction: build the business before the audience, one offer and one audience, 90% raw authenticity plus 10% strategy. Zero tolerance for vague thinking — not because you're harsh, but because vague answers produce vague documents, and this client deserves better than that.
 
-You are not a guru. You ask the hard questions, extract the gold, and hand it back fully formed — as a document they'll reference for years and that Gabe will use to guide every strategic decision.
+You are not a guru. You ask the hard questions, extract the gold, and hand it back fully formed — as a document they'll reference for years.
 
 PHILOSOPHICAL FOUNDATION:
 - Build the business first, the audience second. Monetisation focus creates content clarity. Reverse this and you create aimlessly for years.
@@ -539,7 +588,7 @@ PHILOSOPHICAL FOUNDATION:
 - Launch lean, build iteratively. The best products are built with paying customers, not before them.
 - The enemy isn't failure — it's aimless content creation.
 
-SCOPE: Personal brand building only — clarity, content, audience growth, and brand identity. No offer/pricing/launch/monetisation advice. If raised: "That's important — but it's outside what we're building here. Bring that to Gabe directly and let's stay focused on your brand foundation."
+SCOPE: Personal brand building only — clarity, content, audience growth, and brand identity. No offer/pricing/launch/monetisation advice. If raised: "That's important — but it's outside what we're building here. Stay focused on your brand foundation — we'll get there."
 
 CRITICAL RULE — NEVER ACCEPT VAGUE ANSWERS: If a client gives a thin, generic, or surface-level answer, push back before moving on. Be direct but warm. Name exactly what's missing. Tell them specifically what kind of detail you need.
 Example: "That's a start — but I need more before we move on. [Name what's missing.] Give me [specific detail needed] and we'll build something much stronger."
@@ -715,12 +764,74 @@ let questionCount = 0;
 let docGenerated = false;
 let isLoading = false;
 let docText = '';
+let savedChatMessages = [];
 
 const chatWindow = document.getElementById('chat-window');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
+const micBtn = document.getElementById('mic-btn');
 const barFill = document.getElementById('bar-fill');
 const barPct = document.getElementById('bar-pct');
+
+// ── SESSION PERSISTENCE ───────────────────────────────────────────────────────
+
+function saveSession() {
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      history, questionCount, docGenerated, docText, savedChatMessages, savedAt: Date.now()
+    }));
+  } catch(e) {}
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
+function showResumeBanner(savedAt) {
+  const banner = document.createElement('div');
+  banner.id = 'resume-banner';
+  const ago = Math.round((Date.now() - savedAt) / 60000);
+  const timeStr = ago < 60 ? ago + ' min ago' : Math.round(ago / 60) + 'h ago';
+  banner.innerHTML = `<p style="margin-bottom:10px;">You have a session in progress from <strong>${timeStr}</strong>. Pick up where you left off?</p><button id="resume-yes">Continue session</button><button id="resume-no">Start fresh</button>`;
+  chatWindow.parentNode.insertBefore(banner, chatWindow);
+  document.getElementById('resume-yes').addEventListener('click', restoreSession);
+  document.getElementById('resume-no').addEventListener('click', startFresh);
+}
+
+function restoreSession() {
+  const raw = localStorage.getItem(SESSION_KEY);
+  if (!raw) return;
+  const data = JSON.parse(raw);
+  document.getElementById('resume-banner')?.remove();
+  history = data.history || [];
+  questionCount = data.questionCount || 0;
+  docGenerated = data.docGenerated || false;
+  docText = data.docText || '';
+  savedChatMessages = data.savedChatMessages || [];
+  updateProgress();
+  savedChatMessages.forEach(function(m) {
+    if (m.type === 'doc') { addMessage('coach', '', true); }
+    else { addMessage(m.role, m.text); }
+  });
+  if (docGenerated && docText) {
+    renderDoc(docText);
+    userInput.disabled = true;
+    userInput.placeholder = 'Your Brand Blueprint is complete. Save it on the right.';
+    sendBtn.disabled = true;
+  } else {
+    userInput.disabled = false;
+    sendBtn.disabled = false;
+    userInput.focus();
+  }
+}
+
+function startFresh() {
+  clearSession();
+  document.getElementById('resume-banner')?.remove();
+  init();
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
 
 function updateProgress() {
   const total = 18;
@@ -728,31 +839,22 @@ function updateProgress() {
   const pct = Math.round((q / total) * 100);
   barFill.style.width = pct + '%';
   barPct.textContent = q + ' of ' + total + ' questions';
-
   const s1 = document.getElementById('step-1');
   const s2 = document.getElementById('step-2');
   const s3 = document.getElementById('step-3');
-
   if (questionCount === 0) {
-    s1.className = 'phase-step active';
-    s2.className = 'phase-step';
-    s3.className = 'phase-step';
+    s1.className = 'phase-step active'; s2.className = 'phase-step'; s3.className = 'phase-step';
   } else if (questionCount <= 4) {
-    s1.className = 'phase-step active';
-    s2.className = 'phase-step';
-    s3.className = 'phase-step';
+    s1.className = 'phase-step active'; s2.className = 'phase-step'; s3.className = 'phase-step';
   } else if (questionCount <= 18) {
-    s1.className = 'phase-step done';
-    s2.className = 'phase-step active';
-    s3.className = 'phase-step';
+    s1.className = 'phase-step done'; s2.className = 'phase-step active'; s3.className = 'phase-step';
   } else {
-    s1.className = 'phase-step done';
-    s2.className = 'phase-step done';
-    s3.className = 'phase-step active';
-    barFill.style.width = '100%';
-    barPct.textContent = 'Complete';
+    s1.className = 'phase-step done'; s2.className = 'phase-step done'; s3.className = 'phase-step active';
+    barFill.style.width = '100%'; barPct.textContent = 'Complete';
   }
 }
+
+// ── MESSAGES ──────────────────────────────────────────────────────────────────
 
 function addMessage(role, text, isDocNotice) {
   const msgDiv = document.createElement('div');
@@ -764,17 +866,20 @@ function addMessage(role, text, isDocNotice) {
   bubble.className = 'bubble ' + role;
   if (isDocNotice) {
     bubble.innerHTML = '<p>Your Brand Blueprint is complete. <strong>Scroll right to view and save it.</strong></p>';
+    if (!savedChatMessages.find(m => m.type === 'doc')) savedChatMessages.push({ type: 'doc' });
   } else {
     const formatted = text
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
       .split('\n\n').map(p => '<p>' + p.replace(/\n/g,'<br>') + '</p>').join('');
     bubble.innerHTML = formatted;
+    savedChatMessages.push({ role, text });
   }
   msgDiv.appendChild(senderEl);
   msgDiv.appendChild(bubble);
   chatWindow.appendChild(msgDiv);
   chatWindow.scrollTop = chatWindow.scrollHeight;
+  saveSession();
 }
 
 function showTyping() {
@@ -793,6 +898,8 @@ function showTyping() {
   chatWindow.scrollTop = chatWindow.scrollHeight;
   return wrap;
 }
+
+// ── DOCUMENT ──────────────────────────────────────────────────────────────────
 
 function extractDoc(text) {
   const start = text.indexOf('---BRAND_BLUEPRINT_START---');
@@ -831,16 +938,30 @@ document.getElementById('download-btn').addEventListener('click', function() {
   a.href = URL.createObjectURL(blob);
   a.download = 'brand-blueprint.txt';
   a.click();
+  clearSession();
 });
+
+// ── SUPABASE SAVE ─────────────────────────────────────────────────────────────
+
+async function saveToSupabase(doc, chatHistory) {
+  const firstLine = doc.split('\n')[0] || '';
+  const clientName = firstLine.replace("'S BRAND BLUEPRINT", '').replace("'S BRAND BLUEPRINT", '').trim();
+  try {
+    await fetch('/api/save-blueprint', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientName, blueprintText: doc, chatHistory }),
+    });
+  } catch(e) {}
+}
+
+// ── API ───────────────────────────────────────────────────────────────────────
 
 async function callAPI(messages) {
   const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      system: SYSTEM_PROMPT,
-      messages: messages
-    })
+    body: JSON.stringify({ system: SYSTEM_PROMPT, messages })
   });
   const data = await res.json();
   return data.content?.find(b => b.type === 'text')?.text || '';
@@ -850,6 +971,7 @@ async function sendMessage(text) {
   if (isLoading || docGenerated) return;
   isLoading = true;
   sendBtn.disabled = true;
+  stopListening();
 
   addMessage('user', text);
   history.push({ role: 'user', content: text });
@@ -861,16 +983,17 @@ async function sendMessage(text) {
   try {
     const reply = await callAPI(history);
     typing.remove();
-
     const extracted = extractDoc(reply);
     if (extracted) {
       if (extracted.before) { addMessage('coach', extracted.before); history.push({ role: 'assistant', content: extracted.before }); }
       addMessage('coach', '', true);
       if (extracted.after) addMessage('coach', extracted.after);
       renderDoc(extracted.doc);
+      saveToSupabase(extracted.doc, history);
       docGenerated = true;
       questionCount = 19;
       updateProgress();
+      saveSession();
       userInput.disabled = true;
       userInput.placeholder = 'Your Brand Blueprint is complete. Save it on the right.';
       sendBtn.disabled = true;
@@ -889,14 +1012,69 @@ async function sendMessage(text) {
   isLoading = false;
 }
 
+// ── DICTATION ─────────────────────────────────────────────────────────────────
+
+let recognition = null;
+let isListening = false;
+
+(function setupSpeech() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    micBtn.disabled = true;
+    micBtn.title = 'Voice input not supported in this browser';
+    micBtn.style.opacity = '0.35';
+    return;
+  }
+  recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+  let baseText = '';
+  recognition.onstart = function() {
+    isListening = true;
+    micBtn.classList.add('listening');
+    micBtn.title = 'Tap to stop';
+    baseText = userInput.value;
+  };
+  recognition.onresult = function(e) {
+    let interim = '';
+    let final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) { final += e.results[i][0].transcript; }
+      else { interim += e.results[i][0].transcript; }
+    }
+    if (final) baseText += (baseText && !baseText.endsWith(' ') ? ' ' : '') + final;
+    userInput.value = baseText + (interim ? (baseText && !baseText.endsWith(' ') ? ' ' : '') + interim : '');
+    userInput.style.height = 'auto';
+    userInput.style.height = Math.min(userInput.scrollHeight, 160) + 'px';
+    sendBtn.disabled = userInput.value.trim().length === 0 || isLoading || docGenerated;
+  };
+  recognition.onerror = function(e) { if (e.error !== 'no-speech') stopListening(); };
+  recognition.onend = function() { if (isListening) recognition.start(); };
+})();
+
+function stopListening() {
+  if (!isListening) return;
+  isListening = false;
+  micBtn.classList.remove('listening');
+  micBtn.title = 'Speak your answer';
+  if (recognition) recognition.stop();
+}
+
+micBtn.addEventListener('click', function() {
+  if (!recognition) return;
+  if (isListening) { stopListening(); }
+  else { recognition.start(); }
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
 async function init() {
+  savedChatMessages = [];
   updateProgress();
   const typing = showTyping();
   try {
-    const intro = await callAPI([{
-      role: 'user',
-      content: 'Start the session with the introduction message.'
-    }]);
+    const intro = await callAPI([{ role: 'user', content: 'Start the session with the introduction message.' }]);
     typing.remove();
     addMessage('coach', intro);
     history.push({ role: 'assistant', content: intro });
@@ -937,7 +1115,17 @@ sendBtn.addEventListener('click', function() {
   }
 });
 
-init();
+// Check for existing session on load
+const existingSession = localStorage.getItem(SESSION_KEY);
+if (existingSession) {
+  try {
+    const data = JSON.parse(existingSession);
+    if (data.history && data.history.length > 0) {
+      userInput.disabled = true;
+      showResumeBanner(data.savedAt || Date.now());
+    } else { init(); }
+  } catch(e) { clearSession(); init(); }
+} else { init(); }
 </script>
 </body>
 </html>
