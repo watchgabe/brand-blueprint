@@ -6,8 +6,9 @@ module.exports = async function handler(req, res) {
   try {
     const { sessionId, clientName, blueprintText, chatHistory } = req.body;
 
+    const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
     const response = await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/blueprints?on_conflict=session_id`,
+      `${baseUrl}/rest/v1/blueprints?on_conflict=session_id`,
       {
         method: 'POST',
         headers: {
