@@ -1310,7 +1310,13 @@ async function submitName() {
   const nameVal = document.getElementById('name-input-field').value.trim();
   const emailVal = document.getElementById('email-input-field').value.trim();
   if (!nameVal) { document.getElementById('name-input-field').focus(); return; }
-  if (!emailVal) { document.getElementById('email-input-field').focus(); return; }
+  if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+    const f = document.getElementById('email-input-field');
+    f.style.borderColor = '#ef4444';
+    f.focus();
+    return;
+  }
+  document.getElementById('email-input-field').style.borderColor = '';
 
   clientName = nameVal;
   clientEmail = emailVal;
@@ -1342,7 +1348,7 @@ async function submitName() {
       showChat();
       history.forEach(function(m) { addMessage(m.role === 'user' ? 'user' : 'coach', m.content); });
       userInput.disabled = false;
-      sendBtn.disabled = false;
+      sendBtn.disabled = true;
       userInput.focus();
     } else {
       // No session or already completed — start fresh
