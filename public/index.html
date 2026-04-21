@@ -473,6 +473,67 @@
 
   .doc-btn-secondary:hover { background: var(--accent-light); }
 
+  /* NAME SCREEN */
+  #name-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    max-width: 400px;
+    padding-bottom: 3rem;
+  }
+
+  #name-screen h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+  }
+
+  #name-screen h2 em { font-style: italic; color: var(--accent); }
+
+  #name-screen p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  #name-input-field {
+    width: 100%;
+    padding: 13px 15px;
+    font-size: 15px;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: white;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+
+  #name-input-field:focus { border-color: var(--accent); }
+  #name-input-field::placeholder { color: var(--ink-muted); }
+
+  #name-submit {
+    padding: 12px 28px;
+    font-size: 14px;
+    font-family: var(--sans);
+    font-weight: 500;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+  }
+
+  #name-submit:hover { background: var(--accent); }
+
   /* MOBILE */
   @media (max-width: 768px) {
     main { grid-template-columns: 1fr; }
@@ -492,14 +553,22 @@
 <main>
   <!-- LEFT: CHAT -->
   <div class="left-panel">
-    <div class="chat-intro">
+
+    <div id="name-screen">
+      <h2>Build your brand<br>from the <em>inside out.</em></h2>
+      <p>Before we begin — what's your name?</p>
+      <input id="name-input-field" type="text" placeholder="Your first name" autocomplete="given-name" />
+      <button id="name-submit">Let's begin</button>
+    </div>
+
+    <div id="chat-intro" class="chat-intro" style="display:none;">
       <h1>Build your brand<br>from the <em>inside out.</em></h1>
       <p>Answer honestly — the more specific you are, the stronger your document will be. This is yours to keep.</p>
     </div>
 
-    <div id="chat-window"></div>
+    <div id="chat-window" style="display:none;"></div>
 
-    <div class="input-area">
+    <div class="input-area" id="input-area" style="display:none;">
       <textarea id="user-input" placeholder="Type your reply here..." disabled></textarea>
       <div class="input-footer">
         <span class="input-hint">Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line</span>
@@ -822,6 +891,7 @@ let docGenerated = false;
 let isLoading = false;
 let docText = '';
 let savedChatMessages = [];
+let clientName = localStorage.getItem(SESSION_KEY + '_name') || '';
 let sessionId = localStorage.getItem(SESSION_KEY + '_sid') || crypto.randomUUID();
 
 const chatWindow = document.getElementById('chat-window');
@@ -839,13 +909,23 @@ function saveSession() {
       history, questionCount, docGenerated, docText, savedChatMessages, savedAt: Date.now()
     }));
     localStorage.setItem(SESSION_KEY + '_sid', sessionId);
+    localStorage.setItem(SESSION_KEY + '_name', clientName);
   } catch(e) {}
 }
 
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(SESSION_KEY + '_sid');
+  localStorage.removeItem(SESSION_KEY + '_name');
   sessionId = crypto.randomUUID();
+  clientName = '';
+}
+
+function showChat() {
+  document.getElementById('name-screen').style.display = 'none';
+  document.getElementById('chat-intro').style.display = 'block';
+  document.getElementById('chat-window').style.display = 'flex';
+  document.getElementById('input-area').style.display = 'block';
 }
 
 function showResumeBanner(savedAt) {
@@ -864,6 +944,7 @@ function restoreSession() {
   if (!raw) return;
   const data = JSON.parse(raw);
   document.getElementById('resume-banner')?.remove();
+  showChat();
   history = data.history || [];
   questionCount = data.questionCount || 0;
   docGenerated = data.docGenerated || false;
@@ -891,7 +972,13 @@ function restoreSession() {
 function startFresh() {
   clearSession();
   document.getElementById('resume-banner')?.remove();
-  init();
+  document.getElementById('name-screen').style.display = 'flex';
+  document.getElementById('chat-intro').style.display = 'none';
+  document.getElementById('chat-window').style.display = 'none';
+  document.getElementById('chat-window').innerHTML = '';
+  document.getElementById('input-area').style.display = 'none';
+  document.getElementById('name-input-field').value = '';
+  document.getElementById('name-input-field').focus();
 }
 
 // ── PROGRESS ──────────────────────────────────────────────────────────────────
@@ -1037,10 +1124,13 @@ async function saveToSupabase(chatHistory, doc) {
 // ── API ───────────────────────────────────────────────────────────────────────
 
 async function callAPI(messages) {
+  const system = clientName
+    ? SYSTEM_PROMPT + `\n\nThe client's name is ${clientName}. Use their first name naturally throughout — when greeting them, acknowledging answers, and pushing back. Make it feel personal.`
+    : SYSTEM_PROMPT;
   const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system: SYSTEM_PROMPT, messages })
+    body: JSON.stringify({ system, messages })
   });
   const data = await res.json();
   return data.content?.find(b => b.type === 'text')?.text || '';
@@ -1195,17 +1285,37 @@ sendBtn.addEventListener('click', function() {
   }
 });
 
+// Name screen handler
+document.getElementById('name-submit').addEventListener('click', submitName);
+document.getElementById('name-input-field').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitName();
+});
+
+function submitName() {
+  const val = document.getElementById('name-input-field').value.trim();
+  if (!val) { document.getElementById('name-input-field').focus(); return; }
+  clientName = val;
+  localStorage.setItem(SESSION_KEY + '_name', clientName);
+  saveToSupabase([], null);
+  showChat();
+  init();
+}
+
 // Check for existing session on load
 const existingSession = localStorage.getItem(SESSION_KEY);
 if (existingSession) {
   try {
     const data = JSON.parse(existingSession);
     if (data.history && data.history.length > 0) {
+      showChat();
       userInput.disabled = true;
       showResumeBanner(data.savedAt || Date.now());
-    } else { init(); }
-  } catch(e) { clearSession(); init(); }
-} else { init(); }
+    } else if (clientName) {
+      showChat();
+      init();
+    }
+  } catch(e) { clearSession(); }
+}
 </script>
 </body>
 </html>
