@@ -550,6 +550,20 @@
 
   #name-submit:hover { background: var(--accent); }
 
+  #demo-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    font-family: var(--sans);
+  }
+  #demo-link:hover { color: var(--accent); }
+
   /* MOBILE */
   @media (max-width: 768px) {
     main { grid-template-columns: 1fr; }
@@ -576,6 +590,7 @@
       <input id="name-input-field" type="text" placeholder="Your first name" autocomplete="given-name" style="margin-bottom:8px;" />
       <input id="email-input-field" type="email" placeholder="Your email address" autocomplete="email" />
       <button id="name-submit" style="margin-top:10px;">Let's begin</button>
+      <button id="demo-link">Preview demo output →</button>
     </div>
 
     <div id="chat-intro" class="chat-intro" style="display:none;">
@@ -1302,6 +1317,112 @@ sendBtn.addEventListener('click', function() {
 });
 
 // Name screen handler
+document.getElementById('demo-link').addEventListener('click', runDemo);
+
+async function runDemo() {
+  clientName = 'Alex Rivera';
+  clientEmail = 'demo@fscreative.com';
+  showChat();
+
+  const demoHistory = [
+    { role: 'user', content: 'Start the session with the introduction message.' },
+    { role: 'assistant', content: "Welcome. Let's build your Brand Blueprint." },
+    { role: 'user', content: "Let's go" },
+    { role: 'assistant', content: "Good. Five context questions first — then we get into the real work." },
+    { role: 'user', content: "I've been posting on Instagram for about 6 months. Around 2,400 followers and an email list of 180 people. I have one offer — a 6-week 1:1 coaching program called Reset Protocol — but I've only sold it to 3 clients so far." },
+    { role: 'assistant', content: "Solid foundation to build from. What made you want to build a personal brand in the first place — and why now?" },
+    { role: 'user', content: "I burned out completely in 2021 after 12 years in investment banking. Lost my marriage, my health, my identity. Spent two years rebuilding and realized this was the most important thing I'd ever done. I want to help people do it without losing as much as I did." },
+    { role: 'assistant', content: "That's a real reason. What platform do you want to focus on, and what feels most natural to you?" },
+    { role: 'user', content: "Instagram is where I've started but I want to build toward a podcast. I love talking and interviewing people. Writing feels forced — but I can talk about this stuff for hours." },
+    { role: 'assistant', content: "Makes sense. Tell me about your offer." },
+    { role: 'user', content: "The Reset Protocol — a 6-week 1:1 coaching program for professionals who are either already burned out or heading that way. $2,500. I want them to walk away with a rebuilt sense of identity, clear boundaries, and a sustainable way of working." },
+    { role: 'assistant', content: "Good. What are your specific goals over the next 90 days, 6 months, and 12 months?" },
+    { role: 'user', content: "90 days: 5 paying clients. 6 months: $15k/month, 5k Instagram followers, launch the podcast. 12 months: $30k/month, 10k followers, group program launched, 50 clients total." },
+    { role: 'assistant', content: "Now let's talk about the people you're here for." },
+    { role: 'user', content: "Mid-30s to mid-40s, usually in finance, law, consulting, or tech. High-achieving their whole life — promoted fast, successful by every external measure. But hollow. Showing up every day feeling nothing. Snapping at partners, skipping workouts, lying awake at 2am feeling trapped. They've tried therapy but it didn't go deep enough into the work stuff. They feel like if they stop performing, they'll lose everything." },
+    { role: 'assistant', content: "That's vivid. If you had to pick one past version of yourself that looks a lot like this person — how many years ago, and what were you struggling with?" },
+    { role: 'user', content: "That's me in 2019. Hitting every target, running a 14-person team, buying the apartment, getting the bonus — and feeling absolutely nothing. Just numb. I thought I was broken." },
+    { role: 'assistant', content: "What's the single biggest outcome your dream client wants?" },
+    { role: 'user', content: "They want to feel alive again. Not just functional — actually engaged with their life. To wake up and feel like they're living for something, not just grinding." },
+    { role: 'assistant', content: "What's the surface-level problem blocking them — the thing they'd Google at 11pm?" },
+    { role: 'user', content: "How do I stop feeling burned out without quitting my career. They search: 'how to recover from burnout without leaving your job' or 'why am I so tired even after rest.'" },
+    { role: 'assistant', content: "How does being stuck make them feel about themselves?" },
+    { role: 'user', content: "Weak. Like everyone else can handle it and they can't. Shame — 'I chose this, I wanted this, so what does it say about me that I hate it.' And fear — 'if I slow down, I'll fall behind and lose everything I worked for.'" },
+    { role: 'assistant', content: "Name the villain." },
+    { role: 'user', content: "Hustle culture — the lie that your worth is your output. That more is always better. That rest is laziness. That burnout is a badge of honor. Corporate culture built entire systems around this lie and it's killing people slowly." },
+    { role: 'assistant', content: "Paint the after-state." },
+    { role: 'user', content: "They leave work at a reasonable time and don't feel guilty. They have energy for their relationships. A clear sense of what they actually want — not what they were told to want. They perform better at work because they're no longer running on cortisol and fear." },
+    { role: 'assistant', content: "And if they do nothing?" },
+    { role: 'user', content: "They stay numb for another two to five years. The relationship ends. The body breaks down — adrenal fatigue, autoimmune issues, chronic anxiety. They retire early forced out by health — or make it to 55 with money in the bank and nothing else." },
+    { role: 'assistant', content: "Now I want to talk about you." },
+    { role: 'user', content: "Grew up in a household where achievement was love. Dad was a Wall Street trader, mom was a surgeon. Got into banking because that's what you did. By 35 I was a VP, managing a team, flying business class to places I didn't want to go. In 2021 my wife told me she felt like she was living alone. Two weeks later I had a panic attack in a meeting and had to leave. Didn't go back. Spent the next year in therapy, reading, walking, rebuilding. Lost the marriage anyway. Found myself in the process. Became a certified coach and realized everything I'd learned the hard way could be given to someone else before they lost as much as I did." },
+    { role: 'assistant', content: "What did that journey force you to understand?" },
+    { role: 'user', content: "Identity is the foundation of everything. If you don't know who you are outside of what you do, you'll keep doing it until it kills you. Burnout isn't a workload problem — it's an identity problem." },
+    { role: 'assistant', content: "Your Ikigai — go deep on each one." },
+    { role: 'user', content: "Love: Deep 1:1 conversations. Watching someone have a realization in real time. Long walks. Reading psychology and philosophy.\nGood at: Asking the question that cuts through the noise. Pattern recognition in people. Creating safety that lets people be honest.\nWorld needs: Permission to slow down. Someone to tell high-achievers their worth isn't their output.\nCan be paid for: Coaching executives and high-performers on identity, performance, and sustainable success." },
+    { role: 'assistant', content: "Your non-negotiable beliefs." },
+    { role: 'user', content: "1. Your worth is not your output — I watched this belief destroy my marriage and health. Everything else builds from here.\n2. Slowing down is a skill, not a failure — We've pathologized rest. Getting good at recovery is the highest performance lever.\n3. Identity before strategy — No system will save you if you don't know who you're building it for.\n4. The body keeps the score — Burnout always shows up physically first. Learn to read it.\n5. Sustainable over spectacular — I'll take consistent 80% over brilliant 100% and collapse every time." },
+    { role: 'assistant', content: "Your values." },
+    { role: 'user', content: "1. Honesty — I'd rather tell you what you need to hear than what you want to hear.\n2. Depth — I don't do surface-level. We go all the way down.\n3. Patience — Real change is slow. I'm in it for the long game.\n4. Autonomy — My goal is to make myself unnecessary.\n5. Rest — I model it, protect it, talk about it constantly." },
+    { role: 'assistant', content: "Conventional wisdom you disagree with." },
+    { role: 'user', content: "Everyone says burnout is about working too much. I think that's wrong. Burnout is about working for the wrong reasons — for validation, for safety, for identity. You can work 80 hours for something you love and not burn out. You can work 40 hours for something meaningless and be destroyed. The hours aren't the problem. The meaning is." },
+    { role: 'assistant', content: "What do you refuse to compromise on?" },
+    { role: 'user', content: "I won't coach people who aren't ready to look at themselves honestly. I don't do tactical productivity hacks. I don't let clients use busyness as an excuse to avoid the real work. If someone's not willing to go deep, we're not the right fit." },
+    { role: 'assistant', content: "This next section is your north star." },
+    { role: 'user', content: "$30k/month consistently, a waitlist for 1:1, and a group program with 20 people in the first cohort." },
+    { role: 'assistant', content: "What do you need to be known for?" },
+    { role: 'user', content: "The coach who gets high-achievers to stop performing and start living. People need to believe I've been where they are and know the way out — and that I'll tell them the truth even when it's uncomfortable." },
+    { role: 'assistant', content: "What do you need to do consistently?" },
+    { role: 'user', content: "Post 5x per week on Instagram, publish one podcast episode per week, do 3 sales calls per week, send a weekly email. Consistently." },
+    { role: 'assistant', content: "What do you need to learn?" },
+    { role: 'user', content: "Video editing and podcast production. Sales calls — I'm still uncomfortable asking for the close. And building an email funnel." },
+    { role: 'assistant', content: "Now let's get specific about your content." },
+    { role: 'user', content: "1. Burnout recovery without quitting. 2. Identity and who you are outside of work. 3. The hustle culture lie. 4. Sustainable performance. 5. Rebuilding after loss." },
+    { role: 'assistant', content: "For each theme, what's the take most people in your space aren't saying?" },
+    { role: 'user', content: "Burnout: You can't rest your way out of a meaning problem.\nIdentity: Your values are already there — burnout is what happens when you violate them.\nHustle culture: Boundaries are useless until you know what you're protecting.\nSustainable performance: No routine will save you if your environment is the problem.\nRebuilding: You don't find yourself. You decide who you are." },
+    { role: 'assistant', content: "Boil your method into 3 steps." },
+    { role: 'user', content: "1. Excavate — figure out who you actually are under the performance. 2. Rebuild — create a life that matches that identity. 3. Sustain — build systems that protect it." },
+    { role: 'assistant', content: "Last section." },
+    { role: 'user', content: "I want to actually know the people following me. I respond to every DM personally. I want them to feel like they have someone in their corner — not a guru on a pedestal." },
+    { role: 'assistant', content: "Where is your brand in 3 years?" },
+    { role: 'user', content: "$600k/year. Group program running 3 cohorts annually. A podcast with 50k downloads per episode. A book deal in progress. Working 30 hours per week maximum. Living between New York and somewhere quiet — maybe Vermont." },
+    { role: 'assistant', content: "What do you want people to say about your brand in 10 years?" },
+    { role: 'user', content: "Alex changed the conversation around high achievement. Because of this work, fewer people lost their marriages, their health, their identities to a lie about what success is supposed to look like." },
+    { role: 'assistant', content: "Last one." },
+    { role: 'user', content: "Like someone finally gave me permission to be a human being, not just a performer." }
+  ];
+
+  history = demoHistory;
+  questionCount = 32;
+  updateProgress();
+
+  const typing = showTyping();
+  try {
+    const reply = await callAPI([...demoHistory, {
+      role: 'user',
+      content: 'All 31 questions are now complete. Please generate the full Brand Blueprint document now.'
+    }]);
+    typing.remove();
+    const extracted = extractDoc(reply);
+    if (extracted) {
+      if (extracted.before) addMessage('coach', extracted.before);
+      addMessage('coach', '', true);
+      if (extracted.after) addMessage('coach', extracted.after);
+      renderDoc(extracted.doc);
+      docGenerated = true;
+      updateProgress();
+      userInput.disabled = true;
+      userInput.placeholder = 'Demo complete. This is what your clients will receive.';
+      sendBtn.disabled = true;
+    } else {
+      addMessage('coach', reply);
+    }
+  } catch(e) {
+    typing.remove();
+    addMessage('coach', 'Something went wrong generating the demo. Please try again.');
+  }
+}
+
 document.getElementById('name-submit').addEventListener('click', submitName);
 document.getElementById('name-input-field').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('email-input-field').focus(); });
 document.getElementById('email-input-field').addEventListener('keydown', function(e) { if (e.key === 'Enter') submitName(); });
