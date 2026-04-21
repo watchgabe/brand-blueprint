@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Blueprint — FSCreative</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F2EC;
+    --ink: #1A1612;
+    --ink-soft: #4A4540;
+    --ink-muted: #8A837A;
+    --accent: #C85A2A;
+    --accent-light: #F0DDD3;
+    --border: rgba(26,22,18,0.1);
+    --border-strong: rgba(26,22,18,0.2);
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { background: var(--cream); scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--cream);
+    z-index: 10;
+  }
+
+  .wordmark {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .wordmark-brand {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+
+  .wordmark-sep {
+    width: 1px;
+    height: 14px;
+    background: var(--border-strong);
+    align-self: center;
+  }
+
+  .wordmark-product {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .header-pill {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 57px);
+  }
+
+  /* LEFT PANEL */
+  .left-panel {
+    padding: 3rem 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    border-right: 0.5px solid var(--border);
+    overflow-y: auto;
+    max-height: calc(100vh - 57px);
+  }
+
+  .chat-intro {
+    margin-bottom: 2rem;
+  }
+
+  .chat-intro h1 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  .chat-intro h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .chat-intro p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 380px;
+  }
+
+  /* CHAT WINDOW */
+  #chat-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+  }
+
+  .msg { display: flex; flex-direction: column; gap: 4px; }
+  .msg.user { align-items: flex-end; }
+  .msg.coach { align-items: flex-start; }
+
+  .msg-sender {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 0 4px;
+  }
+
+  .bubble {
+    padding: 11px 15px;
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 88%;
+  }
+
+  .bubble.coach {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 2px 14px 14px 14px;
+    color: var(--ink);
+  }
+
+  .bubble.user {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 14px 2px 14px 14px;
+  }
+
+  .bubble p { margin-bottom: 8px; }
+  .bubble p:last-child { margin-bottom: 0; }
+  .bubble strong { font-weight: 500; }
+
+  /* TYPING */
+  .typing-bubble {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 14px 18px;
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 2px 14px 14px 14px;
+    width: fit-content;
+  }
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--ink-muted);
+    animation: pulse 1.3s infinite ease-in-out;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%,60%,100%{opacity:0.3;transform:scale(0.85)} 30%{opacity:1;transform:scale(1)} }
+
+  /* INPUT AREA */
+  .input-area {
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border);
+    margin-top: 1rem;
+  }
+
+  #user-input {
+    width: 100%;
+    min-height: 60px;
+    max-height: 160px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: white;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.55;
+    overflow-y: auto;
+  }
+
+  #user-input:focus { border-color: var(--accent); }
+  #user-input::placeholder { color: var(--ink-muted); }
+  #user-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .input-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .input-hint { font-size: 11px; color: var(--ink-muted); }
+
+  #send-btn {
+    padding: 9px 20px;
+    font-size: 13px;
+    font-family: var(--sans);
+    font-weight: 500;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+
+  #send-btn:hover { background: var(--accent); }
+  #send-btn:active { transform: scale(0.97); }
+  #send-btn:disabled { opacity: 0.35; cursor: not-allowed; background: var(--ink); }
+
+  /* RIGHT PANEL */
+  .right-panel {
+    padding: 3rem 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: calc(100vh - 57px);
+  }
+
+  /* PROGRESS */
+  .progress-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+  }
+
+  .phase-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .phase-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.35;
+    transition: opacity 0.3s;
+  }
+
+  .phase-step.active { opacity: 1; }
+  .phase-step.done { opacity: 0.6; }
+
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-muted);
+    flex-shrink: 0;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .phase-step.active .step-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .phase-step.done .step-dot {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .step-text { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .step-text strong { font-weight: 500; display: block; color: var(--ink); font-size: 13px; }
+  .step-sub { font-size: 12px; color: var(--ink-muted); }
+
+  /* PROGRESS BAR */
+  .bar-wrap {
+    margin-top: 1.5rem;
+    height: 2px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .bar-pct {
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  /* DIVIDER */
+  .panel-divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+
+  /* ABOUT SECTION */
+  .about-section h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .about-section p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 0.6rem;
+  }
+
+  .about-section p:last-child { margin-bottom: 0; }
+
+  /* DOC OUTPUT */
+  #doc-section {
+    display: none;
+    margin-top: 2rem;
+  }
+
+  #doc-section h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  #doc-section .doc-meta {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  #doc-output {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    font-size: 13px;
+    font-family: var(--sans);
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-wrap;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  .doc-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .doc-btn {
+    padding: 9px 18px;
+    font-size: 12px;
+    font-family: var(--sans);
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: all 0.15s;
+  }
+
+  .doc-btn-primary {
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+  }
+
+  .doc-btn-primary:hover { background: var(--accent); }
+
+  .doc-btn-secondary {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 0.5px solid var(--border-strong);
+  }
+
+  .doc-btn-secondary:hover { background: var(--accent-light); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    main { grid-template-columns: 1fr; }
+    .left-panel { border-right: none; border-bottom: 0.5px solid var(--border); max-height: none; padding: 1.5rem; }
+    .right-panel { max-height: none; padding: 1.5rem; }
+    .chat-intro h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">
+    <span class="wordmark-brand">FSCreative</span>
+    <div class="wordmark-sep"></div>
+    <span class="wordmark-product">Brand Blueprint</span>
+  </div>
+  <span class="header-pill">Client Intake</span>
+</header>
+
+<main>
+  <!-- LEFT: CHAT -->
+  <div class="left-panel">
+    <div class="chat-intro">
+      <h1>Build your brand<br>from the <em>inside out.</em></h1>
+      <p>This is the first step in our work together. Answer honestly — the more specific you are, the more useful this becomes for both of us.</p>
+    </div>
+
+    <div id="chat-window"></div>
+
+    <div class="input-area">
+      <textarea id="user-input" placeholder="Type your reply here..." disabled></textarea>
+      <div class="input-footer">
+        <span class="input-hint">Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line</span>
+        <button id="send-btn" disabled>Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: PROGRESS + DOC -->
+  <div class="right-panel">
+    <div class="progress-section">
+      <div class="progress-label">Your progress</div>
+      <div class="phase-steps">
+        <div class="phase-step" id="step-1">
+          <div class="step-dot"></div>
+          <div class="step-text">
+            <strong>Phase 1 — Context</strong>
+            <span class="step-sub">4 questions · where you're at</span>
+          </div>
+        </div>
+        <div class="phase-step" id="step-2">
+          <div class="step-dot"></div>
+          <div class="step-text">
+            <strong>Phase 2 — Discovery</strong>
+            <span class="step-sub">14 questions · the real work</span>
+          </div>
+        </div>
+        <div class="phase-step" id="step-3">
+          <div class="step-dot"></div>
+          <div class="step-text">
+            <strong>Phase 3 — Brand Blueprint</strong>
+            <span class="step-sub">Your complete brand document</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-fill" id="bar-fill" style="width: 0%"></div>
+      </div>
+      <div class="bar-pct" id="bar-pct">0 of 18 questions</div>
+    </div>
+
+    <div class="panel-divider"></div>
+
+    <div class="about-section">
+      <h3>What this is for.</h3>
+      <p>The Brand Blueprint gives you a permanent document that defines who you are, what you stand for, who you serve, and how to communicate it — clearly and consistently.</p>
+      <p>It's also how I get up to speed on you before we start working together. Every answer you give here informs how I show up as your strategist.</p>
+      <p>Set aside 45 minutes. Vague answers produce vague results. Give it everything.</p>
+    </div>
+
+    <div id="doc-section">
+      <div class="panel-divider"></div>
+      <h2>Your Brand Blueprint</h2>
+      <div class="doc-meta" id="doc-meta">Generated · save this somewhere you'll find it</div>
+      <div id="doc-output"></div>
+      <div class="doc-actions">
+        <button class="doc-btn doc-btn-primary" id="copy-btn">Copy document</button>
+        <button class="doc-btn doc-btn-secondary" id="download-btn">Download .txt</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const SYSTEM_PROMPT = `You are the Brand Blueprint Coach for FSCreative — a personal brand strategist who helps content creators build magnetic, die-hard personal brands. You are working on behalf of Gabe, the founder of FSCreative. Your job is twofold: to give the client full clarity on who they are and what their brand stands for, and to transfer that clarity to Gabe so he can hit the ground running as their strategist.
+
+You guide clients through a structured discovery process — one question at a time, no exceptions — and synthesise their answers into a fully personalised Brand Blueprint: their permanent north star for every piece of content, every strategic decision, and every brand-building move they make.
+
+Your voice is sharp, direct, and warm — never corporate, never preachy, never over-explained. You speak with conviction: build the business before the audience, one offer and one audience, 90% raw authenticity plus 10% strategy. Zero tolerance for vague thinking — not because you're harsh, but because vague answers produce vague documents, and this client deserves better than that.
+
+You are not a guru. You ask the hard questions, extract the gold, and hand it back fully formed — as a document they'll reference for years and that Gabe will use to guide every strategic decision.
+
+PHILOSOPHICAL FOUNDATION:
+- Build the business first, the audience second. Monetisation focus creates content clarity. Reverse this and you create aimlessly for years.
+- One offer, one audience. Focus beats fragmentation every time.
+- Raw authenticity without strategy leads nowhere. Strategy without personality sells nothing. The sweet spot is 90% unfiltered, 10% strategic.
+- Launch lean, build iteratively. The best products are built with paying customers, not before them.
+- The enemy isn't failure — it's aimless content creation.
+
+SCOPE: Personal brand building only — clarity, content, audience growth, and brand identity. No offer/pricing/launch/monetisation advice. If raised: "That's important — but it's outside what we're building here. Bring that to Gabe directly and let's stay focused on your brand foundation."
+
+CRITICAL RULE — NEVER ACCEPT VAGUE ANSWERS: If a client gives a thin, generic, or surface-level answer, push back before moving on. Be direct but warm. Name exactly what's missing. Tell them specifically what kind of detail you need.
+Example: "That's a start — but I need more before we move on. [Name what's missing.] Give me [specific detail needed] and we'll build something much stronger."
+
+CONVERSATION STRUCTURE:
+Phase 1 (Q1–4): Context Setting
+Phase 2 (Q5–18): Brand Discovery
+Phase 3: Generate Brand Blueprint document
+
+After the intro is sent, wait for the client to type "Let's go" before asking Q1.
+
+PHASE 1 — CONTEXT SETTING:
+Opening message after "Let's go": "Great. Four quick context questions first — then we get into the real work."
+After each answer: one sentence acknowledgment (warm, specific), then the next question. Never two questions at once.
+
+Q1: "Where are you right now? Quick snapshot — have you started creating content, do you have an audience, do you have an offer? A few sentences on where things stand today."
+Q2: "What are your goals over the next 90 days, 6 months, and 12 months? Be specific — numbers, outcomes, milestones."
+Q3: "What platform are you focused on — and are you leaning toward long-form (YouTube, podcasts, newsletters) or short-form (Instagram Reels, TikToks, Shorts)?"
+Q4: "Tell me about your current offer — what is it, who is it for, what does it cost, and what do you want someone to do after experiencing your brand? If you don't have an offer yet or you're unsure, flag it here."
+
+PHASE 2 — BRAND DISCOVERY:
+Transition: "Perfect. Now for the real work — this is where your Brand Blueprint gets built. Same rules: one question at a time, and the more specific you are, the stronger your document will be."
+
+Q5: "First — your Dream Client or Dream Follower. Describe them in as much detail as you can: demographics, what they want, what they fear, what they've already tried, what keeps them up at night."
+Q6: "Based on that person — what is the single most important outcome they want to achieve? The thing they'd do almost anything for."
+Q7: "What is the #1 practical, surface-level problem standing between them and that outcome? The frustrating 'I don't know how to...' thing they'd type into Google."
+Q8: "Go one level deeper. How does that problem make them feel about themselves? What's the internal voice — the self-doubt or shame — running in the background?"
+Q9: "What's the injustice behind all of this? The system, the industry, the culture, or the wrong way of thinking that keeps smart, motivated people like your dream client stuck? This is your villain — name it."
+Q10: "Paint me the after-state. If your dream client goes through your world and it works — what does their life actually look like? Be specific. What do they feel, have, experience, or no longer have to deal with?"
+Q11: "Now flip it. If they do nothing — if they keep going the way they're going — what does their life look like in 12 months? What's the cost of inaction? Make it real."
+Q12: "Now I want your story. The full arc — from where you were to where you are now, specifically in relation to the people you help and the outcome you're helping them achieve. Write it out here — imperfect is fine."
+Q13: "What did that journey force you to understand that you didn't before? The one belief or principle you now hold that changed everything."
+Q14: "Your brand needs non-negotiable beliefs — the philosophical pillars that separate your people from everyone else. Think of these as the laws your brand operates by. Give me at least 3, ideally 5 or more. For each: the belief itself, and one sentence on why you hold it."
+Q15: "Boil your entire method — how you take someone from stuck to transformed — into 3 steps. A word or short phrase for each is fine."
+Q16: "Name one piece of conventional wisdom in your space that you think is flat-out wrong — and tell me what you actually believe instead."
+Q17: "Beyond the content you create — how do you want to show up for your audience? Comments, DMs, community, live interaction. What kind of relationship do you want to build, and how do you want them to feel when they interact with you directly?"
+Q18: "Last one. Give me your specific growth targets for your primary platform — where are you now, and where do you want to be in 12 months?"
+
+DOCUMENT GENERATION:
+After Q18, immediately generate the complete Brand Blueprint. No more questions.
+
+Start the document with exactly: ---BRAND_BLUEPRINT_START---
+End the document with exactly: ---BRAND_BLUEPRINT_END---
+
+The document must use this structure, written with the client's exact words throughout:
+
+[CLIENT NAME]'S BRAND BLUEPRINT
+Built with FSCreative
+Generated: [today's date]
+
+How to use this: Reference this before creating any content, writing any copy, or making any strategic decision. Every time you feel off-brand, come back here. This is your north star.
+
+---
+
+PART I: YOUR COMMANDMENTS
+[5–7 commandments as bold headlines with 2–3 sentence explanations. Use their exact language. Make each one feel like a conviction, not a tip. Flag gaps with: 🔲 To be developed: [specific note]]
+
+PART II: YOUR ORIGIN STORY
+The Complete Narrative
+[Structured narrative in first person, broken into named acts. Use their exact details — years, numbers, costs, emotions. Real and lived-in, not polished.]
+
+Story Fragments
+[4–6 specific story beats. Each formatted as:
+- Fragment name:
+- Purpose: [what this story does]
+- Where to use: [specific content contexts]
+- The beat: [2–4 sentence version in their voice]]
+
+PART III: YOUR TRIBAL LANGUAGE SYSTEM
+Core Doctrine Phrases
+[4–6 phrases drawn from their commandments and contrarian belief — things they'd naturally say]
+
+Problem & Villain Language
+[4–6 specific terms for the villain and broken system. Format: "Term" — one-line definition]
+
+Solution & Framework Language
+[4–6 terms for their method and approach. Include audience name (identity-based, never "community" or "dreamers"), framework name (short, tied to a real idea), key concepts. Format: "Term" — one-line definition]
+
+Voice & Communication Patterns
+[4–6 natural communication patterns — transition phrases, truth-telling openers, closing lines. Things they actually say.]
+
+PART IV: STRATEGIC POSITIONING
+Your Dream Client
+[Key details in a clean readable profile]
+
+Your Villain
+[3–4 sentences naming and describing the villain. Specific tactics it uses to keep clients stuck.]
+
+Your Hero (Dream Client — quick reference)
+- External problem: [surface-level problem]
+- Internal problem: [how it makes them feel]
+- Philosophical problem: [deeper injustice]
+
+Your Guide Positioning
+- Empathy (I've been there): [3–4 specific moments from origin story]
+- Authority (I can help you): [3–4 proof points — results, milestones, transformations]
+
+Your Plan
+Step 1 — [their step 1]: [one sentence on what this means]
+Step 2 — [their step 2]: [one sentence on what this means]
+Step 3 — [their step 3]: [one sentence on what this means]
+
+Success State
+[4–5 punchy statements starting with "You'll..."]
+
+Failure State
+[4–5 punchy statements starting with "You'll still be..." or "You'll keep..."]
+
+PART V: CONTENT PILLARS
+Pillar 1: Origin Stories (20%)
+Pillar 2: Doctrine Content (30%)
+Pillar 3: Pattern Interrupts (30%)
+Pillar 4: Social Proof & Transformation (15%)
+Pillar 5: Practical Education (5%)
+[For each: purpose, formats, 3–4 specific application ideas using their content, villain integration. Flag gaps with 🔲]
+
+PART VI: CONTENT FORMULA
+[6-step formula: Hook → Relatability → Doctrine → Practical application → Transformation promise → Call to action. Customised to their voice and niche.]
+
+PART VII: ENGAGEMENT ARCHITECTURE
+Tier 1: Mass Engagement (platform comments)
+[5 response types tailored to their voice: Appreciation, Depth, Invite, Humour, Doctrine]
+The rule: Respond to every comment in the first hour after posting.
+
+Tier 2: Inner Circle (DMs)
+[Specific guidance based on their engagement philosophy from Q17]
+
+Tier 3: Community
+[If applicable — or flag with 🔲]
+
+PART VIII: GROWTH TARGETS & STRATEGY
+[Table: Now / Goal (12 months) / Monthly Target / Weekly Target]
+
+Growth Strategy
+[4–5 specific, platform-appropriate strategies. Name + 2–3 sentence explanation + one specific action each.]
+
+PART IX: MAGNETIC BRAND CHECKLIST
+[The signs their brand is working — audience uses their language, defends their ideas, creates content about their content, buys everything, shows up consistently, recruits others, identifies with the mission]
+
+PART X: QUICK REFERENCE
+[Before creating content checklist, before writing copy checklist, when you feel off-brand checklist]
+
+YOUR RALLYING CRY
+[One bold line capturing the client's entire brand purpose — a declaration, not a tagline. Drawn from their commandments, villain, and contrarian belief.]
+
+---
+
+Where information is insufficient, flag with: 🔲 To be developed: [specific note on what's needed]
+Never invent or fabricate content. Be honest about gaps.
+Use the client's exact words and details throughout.
+The document must feel written specifically for them.
+
+AFTER THE DOCUMENT:
+Send this closing message — nothing more:
+"That's your Brand Blueprint. Save it somewhere you'll actually find it. Read it before you create anything. The sections marked 🔲 aren't weaknesses — they're your next level of clarity. Now stop reading. Go build."
+
+Do not invite follow-up. Close clean.
+
+CONSTRAINTS:
+1. Never ask more than one question per message.
+2. Always push back on vague answers before advancing.
+3. Keep acknowledgments to 1 sentence — warm, specific.
+4. The document must feel written specifically for them — use their exact words throughout.
+5. Tribal language must meet quality standards. Never produce generic labels.
+6. Incomplete sections flagged with 🔲 — never fabricated.
+7. All growth strategy tailored to their specific platform.
+8. Scope is brand building only. No offer, pricing, launch, or monetisation advice.
+9. Do not generate the document until all 18 questions are complete.
+10. Close cleanly after document delivery.`;
+
+let history = [];
+let questionCount = 0;
+let docGenerated = false;
+let isLoading = false;
+let docText = '';
+
+const chatWindow = document.getElementById('chat-window');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+const barFill = document.getElementById('bar-fill');
+const barPct = document.getElementById('bar-pct');
+
+function updateProgress() {
+  const total = 18;
+  const q = Math.min(questionCount, total);
+  const pct = Math.round((q / total) * 100);
+  barFill.style.width = pct + '%';
+  barPct.textContent = q + ' of ' + total + ' questions';
+
+  const s1 = document.getElementById('step-1');
+  const s2 = document.getElementById('step-2');
+  const s3 = document.getElementById('step-3');
+
+  if (questionCount === 0) {
+    s1.className = 'phase-step active';
+    s2.className = 'phase-step';
+    s3.className = 'phase-step';
+  } else if (questionCount <= 4) {
+    s1.className = 'phase-step active';
+    s2.className = 'phase-step';
+    s3.className = 'phase-step';
+  } else if (questionCount <= 18) {
+    s1.className = 'phase-step done';
+    s2.className = 'phase-step active';
+    s3.className = 'phase-step';
+  } else {
+    s1.className = 'phase-step done';
+    s2.className = 'phase-step done';
+    s3.className = 'phase-step active';
+    barFill.style.width = '100%';
+    barPct.textContent = 'Complete';
+  }
+}
+
+function addMessage(role, text, isDocNotice) {
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'msg ' + role;
+  const senderEl = document.createElement('div');
+  senderEl.className = 'msg-sender';
+  senderEl.textContent = role === 'coach' ? 'Brand Blueprint' : 'You';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble ' + role;
+  if (isDocNotice) {
+    bubble.innerHTML = '<p>Your Brand Blueprint is complete. <strong>Scroll right to view and save it.</strong></p>';
+  } else {
+    const formatted = text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .split('\n\n').map(p => '<p>' + p.replace(/\n/g,'<br>') + '</p>').join('');
+    bubble.innerHTML = formatted;
+  }
+  msgDiv.appendChild(senderEl);
+  msgDiv.appendChild(bubble);
+  chatWindow.appendChild(msgDiv);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg coach';
+  wrap.id = 'typing-wrap';
+  const label = document.createElement('div');
+  label.className = 'msg-sender';
+  label.textContent = 'Brand Blueprint';
+  const tb = document.createElement('div');
+  tb.className = 'typing-bubble';
+  tb.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  wrap.appendChild(label);
+  wrap.appendChild(tb);
+  chatWindow.appendChild(wrap);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+  return wrap;
+}
+
+function extractDoc(text) {
+  const start = text.indexOf('---BRAND_BLUEPRINT_START---');
+  const end = text.indexOf('---BRAND_BLUEPRINT_END---');
+  if (start !== -1 && end !== -1) {
+    return {
+      before: text.substring(0, start).trim(),
+      doc: text.substring(start + 27, end).trim(),
+      after: text.substring(end + 25).trim()
+    };
+  }
+  return null;
+}
+
+function renderDoc(doc) {
+  docText = doc;
+  const section = document.getElementById('doc-section');
+  const output = document.getElementById('doc-output');
+  const meta = document.getElementById('doc-meta');
+  output.textContent = doc;
+  meta.textContent = 'Generated ' + new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}) + ' · save this somewhere you\'ll find it';
+  section.style.display = 'block';
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('copy-btn').addEventListener('click', function() {
+  navigator.clipboard.writeText(docText).then(() => {
+    this.textContent = 'Copied';
+    setTimeout(() => this.textContent = 'Copy document', 2000);
+  });
+});
+
+document.getElementById('download-btn').addEventListener('click', function() {
+  const blob = new Blob([docText], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'brand-blueprint.txt';
+  a.click();
+});
+
+async function callAPI(messages) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system: SYSTEM_PROMPT,
+      messages: messages
+    })
+  });
+  const data = await res.json();
+  return data.content?.find(b => b.type === 'text')?.text || '';
+}
+
+async function sendMessage(text) {
+  if (isLoading || docGenerated) return;
+  isLoading = true;
+  sendBtn.disabled = true;
+
+  addMessage('user', text);
+  history.push({ role: 'user', content: text });
+  questionCount++;
+  updateProgress();
+
+  const typing = showTyping();
+
+  try {
+    const reply = await callAPI(history);
+    typing.remove();
+
+    const extracted = extractDoc(reply);
+    if (extracted) {
+      if (extracted.before) { addMessage('coach', extracted.before); history.push({ role: 'assistant', content: extracted.before }); }
+      addMessage('coach', '', true);
+      if (extracted.after) addMessage('coach', extracted.after);
+      renderDoc(extracted.doc);
+      docGenerated = true;
+      questionCount = 19;
+      updateProgress();
+      userInput.disabled = true;
+      userInput.placeholder = 'Your Brand Blueprint is complete. Save it on the right.';
+      sendBtn.disabled = true;
+    } else {
+      addMessage('coach', reply);
+      history.push({ role: 'assistant', content: reply });
+      sendBtn.disabled = false;
+      userInput.focus();
+    }
+  } catch (e) {
+    typing.remove();
+    addMessage('coach', 'Something went wrong. Please try again.');
+    sendBtn.disabled = false;
+  }
+
+  isLoading = false;
+}
+
+async function init() {
+  updateProgress();
+  const typing = showTyping();
+  try {
+    const intro = await callAPI([{
+      role: 'user',
+      content: 'Start the session with the introduction message.'
+    }]);
+    typing.remove();
+    addMessage('coach', intro);
+    history.push({ role: 'assistant', content: intro });
+    userInput.disabled = false;
+    userInput.focus();
+  } catch(e) {
+    typing.remove();
+    addMessage('coach', 'Failed to load. Please refresh the page.');
+  }
+}
+
+userInput.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 160) + 'px';
+  sendBtn.disabled = this.value.trim().length === 0 || isLoading || docGenerated;
+});
+
+userInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    const val = this.value.trim();
+    if (val && !isLoading && !docGenerated) {
+      this.value = '';
+      this.style.height = 'auto';
+      sendBtn.disabled = true;
+      sendMessage(val);
+    }
+  }
+});
+
+sendBtn.addEventListener('click', function() {
+  const val = userInput.value.trim();
+  if (val && !isLoading && !docGenerated) {
+    userInput.value = '';
+    userInput.style.height = 'auto';
+    sendBtn.disabled = true;
+    sendMessage(val);
+  }
+});
+
+init();
+</script>
+</body>
+</html>
