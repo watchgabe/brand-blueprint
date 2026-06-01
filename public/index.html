@@ -1575,31 +1575,160 @@ async function runDemo() {
   questionCount = 37;
   updateProgress();
 
+  // Demo uses a pre-written sample — instant, no API timeout risk
+  const DEMO_DOC = `ALEX RIVERA'S BRAND BLUEPRINT
+Built with FSCreative
+Generated: Demo
+
+---
+
+## BRAND JOURNEY
+
+Desired outcome: 5 paying clients per month at $2,500 each — $12,500/month consistently
+Why it matters: Every month I'm not doing this full-time is another month someone who needs this work can't find it. That urgency is real.
+Known for: That I've been exactly where they are — not theoretically, but that I lived it and found a way out. And that I'll tell them the truth even when it's uncomfortable.
+
+Goals:
+90 days: 5 paying clients total, podcast launched with 10 episodes
+6 months: $8K/month consistently, 5K Instagram followers, 50 podcast episodes
+12 months: $12,500/month, 10K followers, first group cohort complete, fully off consulting work
+
+Brand Journey Statement:
+"I want to reach $12,500/month in coaching revenue by being known for honesty and lived experience, through 5x weekly Instagram posts, one podcast episode per week, and 3 sales calls per week, starting with podcast production and closing sales calls."
+
+---
+
+## VOICE MATERIAL
+> Seed file for Voice-Codex.md
+
+### Core Beliefs
+1. Your worth is not your output — I watched this belief destroy my marriage and health. Everything else builds from here.
+2. Slowing down is a skill, not a failure — We've pathologized rest. Getting good at recovery is the highest performance lever.
+3. Identity before strategy — No system will save you if you don't know who you're building it for.
+4. The body keeps the score — Burnout always shows up physically first. Learn to read it.
+5. Sustainable over spectacular — I'll take consistent 80% over brilliant 100% and collapse every time.
+
+### What They Argue Against
+Burnout is about working too much. It's not. You can work 80 hours for something you love and not burn out. You can work 40 hours for something meaningless and be destroyed in six months. The hours aren't the problem. The meaning is. The whole industry is optimizing the wrong variable.
+
+### Their Edge
+I'm still angry about what happened to me. I've been softening that because anger doesn't seem coach-like. But the truth is that anger is what makes me good at this. I'm angry that the system convinced smart people their worth is their output. That anger isn't a liability — it's why I actually give a damn about this work.
+
+### The Belief That Changed Everything
+Identity is the foundation of everything. If you don't know who you are outside of what you do, you'll keep doing it until it kills you. Burnout isn't a workload problem — it's an identity problem. You can't solve it with a vacation or a promotion.
+
+### How They Explain Things
+Opens with a specific scene or moment (the parking garage at 11pm), then draws the universal principle from it, then lands the reframe in one clean sentence. Personal experience is always the entry point — never abstractions first.
+
+### Signature Language
+- "The hours aren't the problem. The meaning is."
+- "I have a lot of empathy for being stuck. I have zero tolerance for choosing to stay stuck."
+- "I lived it and found a way out."
+- "False comfort is cruelty."
+- "I don't do surface-level. We go all the way down or we don't go at all."
+- "My goal is to make myself unnecessary."
+- "Not teaching theory — teaching what I built and am still living."
+- "That anger isn't a liability — it's why I actually give a damn."
+
+### Ikigai
+What they love: Deep 1:1 conversations. Watching someone have a realization in real time. Long walks where I'm thinking through a problem. Reading psychology and philosophy.
+What they're good at: Asking the question that cuts through the noise. Pattern recognition in people. Creating the kind of safety that lets someone be honest.
+What the world needs from them: Permission to slow down. Someone to tell high-achievers their worth isn't their output. That rebuilding isn't failure.
+What they can be paid for: Coaching executives and high-performers on identity, sustainable performance, and what comes after burnout.
+
+---
+
+## ICP MATERIAL
+> Seed file for ICP.md
+
+### The Person
+Mid-30s to mid-40s, usually in finance, law, consulting, or tech. High-achieving their whole life — promoted fast, successful by every external measure. But hollow. Showing up every day feeling nothing. Snapping at partners, skipping workouts, lying awake at 2am feeling trapped. They've tried therapy but it felt too slow or too abstract. They've tried vacation but came back to the same dread. They feel like if they stop performing they'll lose everything.
+
+### Their World
+They're trying to hold onto one thing that's just theirs — CrossFit, running, a reading habit. Something physical that reminds them they're a person not just a professional. They read Ryan Holiday and listen to Huberman. LinkedIn is where they perform professionally. Instagram is where they scroll at night when they can't sleep.
+
+### Their Fears and Objections
+Fear that nothing will actually change — they've tried things before. Fear that admitting burnout means admitting failure or weakness. Fear that slowing down means falling behind and losing what they've built. The $2,500 is real when you're stretched. And the deepest one: fear of what they'll find if they actually look. Some part of them knows this work requires real honesty and that's terrifying.
+
+### What They Want More Than Anything
+To feel alive again. Not just functional — actually engaged with their life. To perform well at work AND be present at home AND feel like themselves. They want all three at once and they've been told they have to choose.
+
+### What's Blocking Them
+Surface problem: "How to recover from burnout without quitting your job" / "Why am I exhausted even when I rest"
+Internal voice: Everyone else can handle this and I can't. I chose this life so what does it say about me that I hate it? And the deepest one — if I slow down, I'll find out there's nothing underneath the work.
+
+### The Villain
+Hustle culture — the lie that your worth is your output. That more is always better. That rest is laziness and burnout is a badge of honor. Corporate culture built entire systems around this lie and it has convinced genuinely brilliant people to slowly destroy themselves in the name of success.
+
+### If It Works
+They leave work at a time that makes sense and don't feel guilty. Real energy for their relationships — not the leftovers. A clear sense of what they actually want, not what they were told to want. They perform better at work because they're no longer running on cortisol and fear. A sustainable relationship with ambition — still driven, but driving toward something that's actually theirs.
+
+### If They Do Nothing
+They stay numb for another 2–5 years. The relationship ends or goes cold. The body breaks down — adrenal fatigue, chronic anxiety, autoimmune issues. They either burn out completely and get forced out, or make it to 55 with money and nothing else.
+
+### Who They're NOT For
+People who want me to fix them without doing the work. People looking for tactics without wanting to examine why their current life isn't working. People deep in victimhood who aren't ready to move out of it.
+
+### How They're Ahead
+That's me in 2019. Hitting every target, running a 14-person team, buying the apartment, getting the bonus — and feeling absolutely nothing. Just numb and faintly guilty about the numbness because I was supposed to be winning. I'm 3 steps ahead because I've already done the rebuild. I've already figured out what identity looks like when it's not tied to a job title. I'm not teaching theory — I'm teaching what I built and am still living.
+
+---
+
+## STRATEGIC CLARITY
+> Seed file for Strategic-Clarity.md
+
+### The Offer
+The Reset Protocol — a 6-week 1:1 coaching program for professionals who are burned out or heading that way. $2,500. They walk away with a rebuilt sense of identity, clear boundaries, and a sustainable way of working. Book a free 30-minute call first — no pitch, just a conversation to see if it's a fit.
+
+### What They Need to Be Known For
+That I've been exactly where they are — not theoretically, but lived it and found a way out. And that I'll tell them the truth even when it's uncomfortable. Most coaches in this space are selling hope. I need to be known for honesty.
+
+### Platform & Style
+Instagram (short-form, personal story) + podcast (long-form conversations and interviews). Audio-first, conversation-driven.
+
+### Content Pillars
+1. Burnout recovery without quitting your career
+2. Identity — who you are when you're not your job
+3. The hustle culture lie and what to believe instead
+4. Sustainable performance — ambition without self-destruction
+5. Rebuilding after loss — identity, relationships, whatever the burnout took
+
+### Unique Takes
+Burnout recovery: You can't rest your way out of a meaning problem.
+Identity: Your values are already there — burnout is what happens when you've been violating them for years.
+Hustle culture: Boundaries are useless until you know what you're protecting.
+Sustainable performance: No system will save you if your environment is the problem.
+Rebuilding: You don't find yourself. You decide who you are.
+
+### The Method
+Step 1 — Excavate: figure out who you actually are underneath the performance
+Step 2 — Rebuild: create a life and work structure that matches that identity
+Step 3 — Sustain: build habits and systems that protect it when pressure returns
+
+### Consistent Actions
+Post 5x per week on Instagram — mix of teaching, personal story, and behind-the-scenes of the coaching work. One podcast episode per week. One email to the list per week. At least 3 sales conversations per week. Respond to every real DM personally. No exceptions on content cadence for the first 12 months.
+
+### What to Learn First
+Podcast production — recording, editing, distribution. Sales conversations — close rate is around 50%, need to get comfortable making the direct ask. Email marketing — have a list, barely using it. Need to write emails that convert, not just educate.
+
+### 3-Year Vision
+$600K/year. Group program running 3 cohorts annually, 15–20 people each. Podcast with 50K downloads per episode. Book deal in progress. Working 30 hours a week maximum. Living between New York and Portugal.
+Ideal day: Wake up without an alarm. First hour reading and writing with no phone. Record one podcast episode or write one piece of content. Two coaching sessions in the afternoon. Done by 5pm.
+
+### Impact & Legacy
+Change to create: Change the metric people use to measure a good life. Make "do you feel alive?" a legitimate success metric for ambitious people — alongside achievement, not instead of it.
+Legacy line: Alex changed the conversation around what it means to succeed. Because of this work, fewer people destroyed their health and their relationships chasing a definition of success that was never theirs.`;
+
   const typing = showTyping();
-  try {
-    const reply = await callAPI([...demoHistory, {
-      role: 'user',
-      content: 'All 36 questions are now complete. Please generate the full Brand Blueprint document now.'
-    }]);
-    typing.remove();
-    const extracted = extractDoc(reply);
-    if (extracted) {
-      if (extracted.before) addMessage('coach', extracted.before);
-      addMessage('coach', '', true);
-      if (extracted.after) addMessage('coach', extracted.after);
-      renderDoc(extracted.doc);
-      docGenerated = true;
-      updateProgress();
-      userInput.disabled = true;
-      userInput.placeholder = 'Demo complete. This is what your clients will receive.';
-      sendBtn.disabled = true;
-    } else {
-      addMessage('coach', reply);
-    }
-  } catch(e) {
-    typing.remove();
-    addMessage('coach', 'Something went wrong generating the demo. Please try again.');
-  }
+  await new Promise(r => setTimeout(r, 1200));
+  typing.remove();
+  addMessage('coach', '', true);
+  renderDoc(DEMO_DOC);
+  docGenerated = true;
+  updateProgress();
+  userInput.disabled = true;
+  userInput.placeholder = 'Demo complete. This is what your clients will receive.';
+  sendBtn.disabled = true;
 }
 
 document.getElementById('name-submit').addEventListener('click', submitName);
