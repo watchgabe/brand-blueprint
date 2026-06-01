@@ -1459,74 +1459,120 @@ async function runDemo() {
 
   const demoHistory = [
     { role: 'user', content: 'Start the session with the introduction message.' },
-    { role: 'assistant', content: "Welcome. Let's build your Brand Blueprint." },
+    { role: 'assistant', content: "Welcome. Let's build your Brand Blueprint — a structured document that seeds your Voice Codex, ICP, and Strategic Clarity. When you're ready, type \"Let's go.\"" },
     { role: 'user', content: "Let's go" },
-    { role: 'assistant', content: "Good. Five context questions first — then we get into the real work." },
+    { role: 'assistant', content: "Good. Seven questions to lock in your direction — your desired outcome, your goals, your platform, and your offer. Then we get into the real work." },
+    // Q1
     { role: 'user', content: "I've been posting on Instagram for about 6 months. Around 2,400 followers and an email list of 180 people. I have one offer — a 6-week 1:1 coaching program called Reset Protocol — but I've only sold it to 3 clients so far." },
-    { role: 'assistant', content: "Solid foundation to build from. What made you want to build a personal brand in the first place — and why now?" },
-    { role: 'user', content: "I burned out completely in 2021 after 12 years in investment banking. Lost my marriage, my health, my identity. Spent two years rebuilding and realized this was the most important thing I'd ever done. I want to help people do it without losing as much as I did." },
-    { role: 'assistant', content: "That's a real reason. What platform do you want to focus on, and what feels most natural to you?" },
-    { role: 'user', content: "Instagram is where I've started but I want to build toward a podcast. I love talking and interviewing people. Writing feels forced — but I can talk about this stuff for hours." },
-    { role: 'assistant', content: "Makes sense. Tell me about your offer." },
-    { role: 'user', content: "The Reset Protocol — a 6-week 1:1 coaching program for professionals who are either already burned out or heading that way. $2,500. I want them to walk away with a rebuilt sense of identity, clear boundaries, and a sustainable way of working." },
-    { role: 'assistant', content: "Good. What are your specific goals over the next 90 days, 6 months, and 12 months?" },
-    { role: 'user', content: "90 days: 5 paying clients. 6 months: $15k/month, 5k Instagram followers, launch the podcast. 12 months: $30k/month, 10k followers, group program launched, 50 clients total." },
-    { role: 'assistant', content: "Now let's talk about the people you're here for." },
-    { role: 'user', content: "Mid-30s to mid-40s, usually in finance, law, consulting, or tech. High-achieving their whole life — promoted fast, successful by every external measure. But hollow. Showing up every day feeling nothing. Snapping at partners, skipping workouts, lying awake at 2am feeling trapped. They've tried therapy but it didn't go deep enough into the work stuff. They feel like if they stop performing, they'll lose everything." },
-    { role: 'assistant', content: "That's vivid. If you had to pick one past version of yourself that looks a lot like this person — how many years ago, and what were you struggling with?" },
-    { role: 'user', content: "That's me in 2019. Hitting every target, running a 14-person team, buying the apartment, getting the bonus — and feeling absolutely nothing. Just numb. I thought I was broken." },
-    { role: 'assistant', content: "What's the single biggest outcome your dream client wants?" },
-    { role: 'user', content: "They want to feel alive again. Not just functional — actually engaged with their life. To wake up and feel like they're living for something, not just grinding." },
-    { role: 'assistant', content: "What's the surface-level problem blocking them — the thing they'd Google at 11pm?" },
-    { role: 'user', content: "How do I stop feeling burned out without quitting my career. They search: 'how to recover from burnout without leaving your job' or 'why am I so tired even after rest.'" },
-    { role: 'assistant', content: "How does being stuck make them feel about themselves?" },
-    { role: 'user', content: "Weak. Like everyone else can handle it and they can't. Shame — 'I chose this, I wanted this, so what does it say about me that I hate it.' And fear — 'if I slow down, I'll fall behind and lose everything I worked for.'" },
-    { role: 'assistant', content: "Name the villain." },
-    { role: 'user', content: "Hustle culture — the lie that your worth is your output. That more is always better. That rest is laziness. That burnout is a badge of honor. Corporate culture built entire systems around this lie and it's killing people slowly." },
+    { role: 'assistant', content: "Solid foundation. What made you want to build a personal brand in the first place — and why now?" },
+    // Q2
+    { role: 'user', content: "I burned out completely in 2021 after 12 years in investment banking. Lost my marriage, my health, my identity. Spent two years rebuilding and realized this was the most important work I'd ever done. I want to help people do it without losing as much as I did." },
+    { role: 'assistant', content: "That's a real reason to build. What's your specific desired outcome in 12 months — give me a number — and why does that outcome actually matter to you at a deeper level?" },
+    // Q3
+    { role: 'user', content: "I want 5 paying clients per month at $2,500 each — $12,500/month consistently. That's when I can walk away from the consulting work I still take to pay bills. The deeper reason: every month I'm not doing this full-time is another month someone who needs this work can't find it. That urgency is real." },
+    { role: 'assistant', content: "Clear outcome, clear stakes. In order for that to happen — what do you need people to believe about you before they'll take action?" },
+    // Q4
+    { role: 'user', content: "They need to believe I've been exactly where they are — not theoretically, but that I lived it and found a way out. And that I'll tell them the truth even when it's uncomfortable. Most coaches in this space are selling hope. I need to be known for honesty." },
+    { role: 'assistant', content: "Sharp positioning. Goals — give me specifics for 90 days, 6 months, and 12 months." },
+    // Q5
+    { role: 'user', content: "90 days: 5 paying clients total, podcast launched with 10 episodes. 6 months: $8K/month consistently, 5K Instagram followers, 50 podcast episodes. 12 months: $12,500/month, 10K followers, first group cohort complete, fully off consulting work." },
+    { role: 'assistant', content: "Specific and sequenced. What platform do you want to focus on, and what feels most natural to you?" },
+    // Q6
+    { role: 'user', content: "Instagram is where I've started but the podcast is the real vehicle. I love long-form conversations — I can talk about this stuff for hours. Writing feels forced. The format I love most is interviewing people and being interviewed." },
+    { role: 'assistant', content: "Audio-first, conversation-driven — clean north star. Tell me about your offer." },
+    // Q7
+    { role: 'user', content: "The Reset Protocol — a 6-week 1:1 coaching program for professionals who are burned out or heading that way. $2,500. They walk away with a rebuilt sense of identity, clear boundaries, and a sustainable way of working. I want them to book a free 30-minute call first — no pitch, just a conversation to see if it's a fit." },
+    { role: 'assistant', content: "Good. Now let's talk about you — your story, your beliefs, your why. This is where your brand gets its soul." },
+    // Q8
+    { role: 'user', content: "Grew up in a household where achievement was love. Dad was a Wall Street trader, mom was a surgeon. Got into banking because that's what you did. By 35 I was a VP, managing a 14-person team, flying business class to places I didn't want to go. In 2021 my wife told me she felt like she was living alone. Two weeks later I had a panic attack in a meeting and had to leave. Didn't go back. Spent the next year in therapy, reading, walking, rebuilding. Lost the marriage anyway. Found myself in the process. Became a certified coach and realized everything I'd learned the hard way could be given to someone else before they lost as much as I did." },
+    { role: 'assistant', content: "That's the real version. What was the specific moment that changed the trajectory — set the scene." },
+    // Q9
+    { role: 'user', content: "Not the panic attack — that was just the collapse. The real moment was three weeks before it, sitting in my car in the parking garage at 11pm after another 14-hour day. I called my wife to say I was leaving soon. She didn't pick up. I sat there in the dark and realized I couldn't remember the last time I'd looked forward to going home. That was it." },
+    { role: 'assistant', content: "That's the scene. What part of your story do you usually skip or soften?" },
+    // Q10
+    { role: 'user', content: "That I actually loved parts of banking. I skip that because it complicates the narrative. But the real problem wasn't the job — it was that I'd made the job my whole identity. When I say that, people sometimes think it undermines the burnout story. It doesn't. It makes it harder and more honest." },
+    { role: 'assistant', content: "That nuance is actually your sharpest material — keep it. What did the journey force you to understand?" },
+    // Q11
+    { role: 'user', content: "That identity is the foundation of everything. If you don't know who you are outside of what you do, you'll keep doing it until it kills you. Burnout isn't a workload problem — it's an identity problem. You can't solve it with a vacation or a promotion." },
+    { role: 'assistant', content: "That's a core belief, not a positioning statement — it'll run through everything. Walk me through how you actually do the work." },
+    // Q12
+    { role: 'user', content: "I start by getting someone to draw a clear line between who they are and what they do. Most coaches skip that and go straight to tactics — boundaries, sleep, saying no. Those things don't work until someone has a stable identity underneath them. I spend the first two sessions just on that. Then we build a definition of sustainable success that's actually theirs. Then we build the structures around it. Most coaches do it backwards." },
+    { role: 'assistant', content: "That sequence is your method. What feedback do you get more than once?" },
+    // Q13
+    { role: 'user', content: "People keep saying I asked the question nobody else asked. In sessions, in conversations, even on Instagram. I think it's because I'm genuinely trying to get to the thing underneath the thing. I'm not interested in the presenting problem — I'm interested in what's causing it. People feel that." },
+    { role: 'assistant', content: "That's a real differentiator. Your Ikigai — go deep on each one." },
+    // Q14
+    { role: 'user', content: "Love: Deep 1:1 conversations. Watching someone have a realization in real time. Long walks where I'm thinking through a problem. Reading psychology and philosophy.\nGood at: Asking the question that cuts through the noise. Pattern recognition in people. Creating the kind of safety that lets someone be honest.\nWorld needs: Permission to slow down. Someone to tell high-achievers their worth isn't their output. That rebuilding isn't failure.\nCan be paid for: Coaching executives and high-performers on identity, sustainable performance, and what comes after burnout." },
+    { role: 'assistant', content: "Strong signal across all four. Your values — 5–6 principles with a line on why each matters." },
+    // Q15
+    { role: 'user', content: "1. Honesty — I'd rather tell you what you need to hear than what you want to hear. False comfort is cruelty.\n2. Depth — I don't do surface-level. We go all the way down or we don't go at all.\n3. Patience — Real change is slow. I'm in it for the long game.\n4. Autonomy — My goal is to make myself unnecessary. I'm not building dependency.\n5. Rest — I model it, protect it, talk about it constantly. It's not a reward. It's a practice." },
+    { role: 'assistant', content: "Those hold together well. What piece of conventional wisdom in your space is flat-out wrong?" },
+    // Q16
+    { role: 'user', content: "That burnout is about working too much. It's not. You can work 80 hours for something you love and not burn out. You can work 40 hours for something meaningless and be destroyed in six months. The hours aren't the problem. The meaning is. The whole industry is optimizing the wrong variable." },
+    { role: 'assistant', content: "Sharp and defensible. What do you refuse to compromise on?" },
+    // Q17
+    { role: 'user', content: "I won't work with people who aren't ready to look at themselves honestly. I don't do productivity hacks. I don't let clients use busyness as a shield. And I will never tell someone their burnout is their fault — the system that created it is real — but I also won't let them use the system as an excuse to avoid changing." },
+    { role: 'assistant', content: "That last line is exactly the tension that makes you credible. What have you been hiding that's actually your edge?" },
+    // Q18
+    { role: 'user', content: "That I'm still angry about what happened to me. I've been softening that because anger doesn't seem coach-like. But the truth is that anger is what makes me good at this. I'm angry that the system convinced smart people their worth is their output. That anger isn't a liability — it's why I actually give a damn about this work." },
+    { role: 'assistant', content: "Don't soften that — that's exactly where people will trust you. Now let's talk about the people you're here for." },
+    // Q19
+    { role: 'user', content: "Mid-30s to mid-40s, usually in finance, law, consulting, or tech. High-achieving their whole life — promoted fast, successful by every external measure. But hollow. Showing up every day feeling nothing. Snapping at partners, skipping workouts, lying awake at 2am feeling trapped. They've tried therapy but it felt too slow. They've tried vacation but came back to the same dread. They feel like if they stop performing they'll lose everything." },
+    { role: 'assistant', content: "Vivid. What are their passions and hobbies — and what platforms are they most active on?" },
+    // Q20
+    { role: 'user', content: "They're trying to hold onto one thing that's just theirs — CrossFit, running, a reading habit. Something physical that reminds them they're a person not just a professional. They read Ryan Holiday and listen to Huberman. LinkedIn is where they perform professionally. Instagram is where they scroll at night when they can't sleep. That's where I reach them." },
+    { role: 'assistant', content: "Instagram at night looking for something real — precise placement. What are their biggest fears and objections?" },
+    // Q21
+    { role: 'user', content: "Fear that nothing will actually change — they've tried things before. Fear that admitting burnout means admitting failure. Fear that slowing down means falling behind and losing what they've built. The $2,500 is real when you're stretched. And honestly — fear of what they'll find if they actually look. Some part of them knows this work requires real honesty and that's terrifying." },
+    { role: 'assistant', content: "That last one is the deepest objection and most coaches never name it. Who is NOT your audience?" },
+    // Q22
+    { role: 'user', content: "People who want me to fix them without doing the work. People looking for tactics without wanting to examine why their current life isn't working. And people deep in victimhood who aren't ready to move out of it. I have a lot of empathy for being stuck. I have zero tolerance for choosing to stay stuck." },
+    { role: 'assistant', content: "Clear boundary, clear voice. One past version of yourself that looks like this person." },
+    // Q23
+    { role: 'user', content: "That's me in 2019. Hitting every target, running a 14-person team, buying the apartment, getting the bonus — and feeling absolutely nothing. Just numb and faintly guilty about the numbness because I was supposed to be winning. I didn't know it was a completely predictable outcome of building your identity entirely around achievement." },
+    { role: 'assistant', content: "The specificity — 2019, the apartment, the guilt about the numbness — that's what makes it land. What's the single biggest outcome they want?" },
+    // Q24
+    { role: 'user', content: "They want to feel alive again. Not just functional — actually engaged with their life. To perform well at work AND be present at home AND feel like themselves. They want all three at once and they've been told they have to choose." },
+    { role: 'assistant', content: "What's the surface-level problem — the 11pm Google search — and underneath that, the internal voice?" },
+    // Q25
+    { role: 'user', content: "They search 'how to recover from burnout without quitting your job' or 'why am I exhausted even when I rest.' Underneath it, the voice says: everyone else can handle this and I can't. I chose this life so what does it say about me that I hate it? And the deepest one — if I slow down, I'll find out there's nothing underneath the work. That's the one they never say out loud." },
+    { role: 'assistant', content: "That deepest fear is the real work. Name the villain." },
+    // Q26
+    { role: 'user', content: "Hustle culture — the lie that your worth is your output. That more is always better. That rest is laziness and burnout is a badge of honor. Corporate culture built entire systems around this lie and it has convinced genuinely brilliant people to slowly destroy themselves in the name of success." },
     { role: 'assistant', content: "Paint the after-state." },
-    { role: 'user', content: "They leave work at a reasonable time and don't feel guilty. They have energy for their relationships. A clear sense of what they actually want — not what they were told to want. They perform better at work because they're no longer running on cortisol and fear." },
-    { role: 'assistant', content: "And if they do nothing?" },
-    { role: 'user', content: "They stay numb for another two to five years. The relationship ends. The body breaks down — adrenal fatigue, autoimmune issues, chronic anxiety. They retire early forced out by health — or make it to 55 with money in the bank and nothing else." },
-    { role: 'assistant', content: "Now I want to talk about you." },
-    { role: 'user', content: "Grew up in a household where achievement was love. Dad was a Wall Street trader, mom was a surgeon. Got into banking because that's what you did. By 35 I was a VP, managing a team, flying business class to places I didn't want to go. In 2021 my wife told me she felt like she was living alone. Two weeks later I had a panic attack in a meeting and had to leave. Didn't go back. Spent the next year in therapy, reading, walking, rebuilding. Lost the marriage anyway. Found myself in the process. Became a certified coach and realized everything I'd learned the hard way could be given to someone else before they lost as much as I did." },
-    { role: 'assistant', content: "What did that journey force you to understand?" },
-    { role: 'user', content: "Identity is the foundation of everything. If you don't know who you are outside of what you do, you'll keep doing it until it kills you. Burnout isn't a workload problem — it's an identity problem." },
-    { role: 'assistant', content: "Your Ikigai — go deep on each one." },
-    { role: 'user', content: "Love: Deep 1:1 conversations. Watching someone have a realization in real time. Long walks. Reading psychology and philosophy.\nGood at: Asking the question that cuts through the noise. Pattern recognition in people. Creating safety that lets people be honest.\nWorld needs: Permission to slow down. Someone to tell high-achievers their worth isn't their output.\nCan be paid for: Coaching executives and high-performers on identity, performance, and sustainable success." },
-    { role: 'assistant', content: "Your non-negotiable beliefs." },
-    { role: 'user', content: "1. Your worth is not your output — I watched this belief destroy my marriage and health. Everything else builds from here.\n2. Slowing down is a skill, not a failure — We've pathologized rest. Getting good at recovery is the highest performance lever.\n3. Identity before strategy — No system will save you if you don't know who you're building it for.\n4. The body keeps the score — Burnout always shows up physically first. Learn to read it.\n5. Sustainable over spectacular — I'll take consistent 80% over brilliant 100% and collapse every time." },
-    { role: 'assistant', content: "Your values." },
-    { role: 'user', content: "1. Honesty — I'd rather tell you what you need to hear than what you want to hear.\n2. Depth — I don't do surface-level. We go all the way down.\n3. Patience — Real change is slow. I'm in it for the long game.\n4. Autonomy — My goal is to make myself unnecessary.\n5. Rest — I model it, protect it, talk about it constantly." },
-    { role: 'assistant', content: "Conventional wisdom you disagree with." },
-    { role: 'user', content: "Everyone says burnout is about working too much. I think that's wrong. Burnout is about working for the wrong reasons — for validation, for safety, for identity. You can work 80 hours for something you love and not burn out. You can work 40 hours for something meaningless and be destroyed. The hours aren't the problem. The meaning is." },
-    { role: 'assistant', content: "What do you refuse to compromise on?" },
-    { role: 'user', content: "I won't coach people who aren't ready to look at themselves honestly. I don't do tactical productivity hacks. I don't let clients use busyness as an excuse to avoid the real work. If someone's not willing to go deep, we're not the right fit." },
-    { role: 'assistant', content: "This next section is your north star." },
-    { role: 'user', content: "$30k/month consistently, a waitlist for 1:1, and a group program with 20 people in the first cohort." },
-    { role: 'assistant', content: "What do you need to be known for?" },
-    { role: 'user', content: "The coach who gets high-achievers to stop performing and start living. People need to believe I've been where they are and know the way out — and that I'll tell them the truth even when it's uncomfortable." },
-    { role: 'assistant', content: "What do you need to do consistently?" },
-    { role: 'user', content: "Post 5x per week on Instagram, publish one podcast episode per week, do 3 sales calls per week, send a weekly email. Consistently." },
-    { role: 'assistant', content: "What do you need to learn?" },
-    { role: 'user', content: "Video editing and podcast production. Sales calls — I'm still uncomfortable asking for the close. And building an email funnel." },
-    { role: 'assistant', content: "Now let's get specific about your content." },
-    { role: 'user', content: "1. Burnout recovery without quitting. 2. Identity and who you are outside of work. 3. The hustle culture lie. 4. Sustainable performance. 5. Rebuilding after loss." },
-    { role: 'assistant', content: "For each theme, what's the take most people in your space aren't saying?" },
-    { role: 'user', content: "Burnout: You can't rest your way out of a meaning problem.\nIdentity: Your values are already there — burnout is what happens when you violate them.\nHustle culture: Boundaries are useless until you know what you're protecting.\nSustainable performance: No routine will save you if your environment is the problem.\nRebuilding: You don't find yourself. You decide who you are." },
-    { role: 'assistant', content: "Boil your method into 3 steps." },
-    { role: 'user', content: "1. Excavate — figure out who you actually are under the performance. 2. Rebuild — create a life that matches that identity. 3. Sustain — build systems that protect it." },
-    { role: 'assistant', content: "Last section." },
-    { role: 'user', content: "I want to actually know the people following me. I respond to every DM personally. I want them to feel like they have someone in their corner — not a guru on a pedestal." },
-    { role: 'assistant', content: "Where is your brand in 3 years?" },
-    { role: 'user', content: "$600k/year. Group program running 3 cohorts annually. A podcast with 50k downloads per episode. A book deal in progress. Working 30 hours per week maximum. Living between New York and somewhere quiet — maybe Vermont." },
-    { role: 'assistant', content: "What do you want people to say about your brand in 10 years?" },
-    { role: 'user', content: "Alex changed the conversation around high achievement. Because of this work, fewer people lost their marriages, their health, their identities to a lie about what success is supposed to look like." },
-    { role: 'assistant', content: "Last one." },
-    { role: 'user', content: "Like someone finally gave me permission to be a human being, not just a performer." }
+    // Q27
+    { role: 'user', content: "They leave work at a time that makes sense and don't feel guilty. Real energy for their relationships — not the leftovers. A clear sense of what they actually want, not what they were told to want. They perform better at work because they're no longer running on cortisol and fear. And they have a sustainable relationship with ambition — still driven, but driving toward something that's actually theirs." },
+    { role: 'assistant', content: "And if they do nothing? And tell me — how are you 2 or 3 steps ahead of where they are right now?" },
+    // Q28
+    { role: 'user', content: "They stay numb for another 2–5 years. The relationship ends or goes cold. The body breaks down — adrenal fatigue, chronic anxiety, autoimmune issues. They either burn out completely and get forced out, or make it to 55 with money and nothing else. I'm 3 steps ahead because I've already done the rebuild. I've already figured out what identity looks like when it's not tied to a job title. I'm not teaching theory — I'm teaching what I built and am still living." },
+    { role: 'assistant', content: "Now let's get specific about your content and your method." },
+    // Q29
+    { role: 'user', content: "1. Burnout recovery without quitting your career. 2. Identity — who you are when you're not your job. 3. The hustle culture lie and what to believe instead. 4. Sustainable performance — ambition without self-destruction. 5. Rebuilding after loss — identity, relationships, whatever the burnout took." },
+    { role: 'assistant', content: "For each of those themes — what's the take most people in your space aren't saying?" },
+    // Q30
+    { role: 'user', content: "Burnout recovery: You can't rest your way out of a meaning problem.\nIdentity: Your values are already there — burnout is what happens when you've been violating them for years.\nHustle culture: Boundaries are useless until you know what you're protecting.\nSustainable performance: No system will save you if your environment is the problem.\nRebuilding: You don't find yourself. You decide who you are." },
+    { role: 'assistant', content: "Five sharp takes. Boil your method into 3 steps." },
+    // Q31
+    { role: 'user', content: "1. Excavate — figure out who you actually are underneath the performance. 2. Rebuild — create a life and work structure that matches that identity. 3. Sustain — build habits and systems that protect it when pressure returns." },
+    { role: 'assistant', content: "Clean and teachable. What do you need to DO consistently to build this brand?" },
+    // Q32
+    { role: 'user', content: "Post 5x per week on Instagram — mix of teaching, personal story, and behind-the-scenes of the coaching work. Publish one podcast episode per week. Send one email to my list every week. Do at least 3 sales conversations per week. Respond to every real DM personally. No exceptions on content cadence for the first 12 months." },
+    { role: 'assistant', content: "Committed and specific. What do you need to LEARN right now?" },
+    // Q33
+    { role: 'user', content: "Podcast production — recording, editing, distribution. I'm doing it all myself to start. Sales conversations — I close about 50% which I think is low; I'm still uncomfortable making the direct ask. And email marketing — I have a list and barely use it. I need to learn how to write emails that actually convert, not just educate." },
+    { role: 'assistant', content: "Last section — the world you're building and the legacy you're leaving." },
+    // Q34
+    { role: 'user', content: "I want to actually know the people following me. I respond to every DM personally — that won't change until it's physically impossible. I want my audience to feel like they have someone in their corner who gives a damn about them specifically — not just content that performs well. Eventually a community where people who've gone through the work support each other. But the relationship comes first." },
+    { role: 'assistant', content: "Where is your brand in 3 years — specific — and what does your ideal working day look like inside that vision?" },
+    // Q35
+    { role: 'user', content: "$600K/year. Group program running 3 cohorts annually, 15–20 people each. A podcast with 50K downloads per episode. A book deal in progress. Working 30 hours a week maximum. Living between New York and somewhere quiet — I keep looking at Portugal. Ideal day: wake up without an alarm, first hour reading and writing with no phone. Record one podcast episode or write one piece of content. Two coaching sessions in the afternoon. Done by 5pm." },
+    { role: 'assistant', content: "Two-part final question — what change do you want to create in the world, and what's your 10-year legacy line?" },
+    // Q36
+    { role: 'user', content: "I want to change the metric people use to measure a good life. Right now the default is achievement — title, salary, output. I want to make 'do you feel alive?' a legitimate success metric for ambitious people. Not instead of achievement — alongside it. Ten years: people say Alex changed the conversation around what it means to succeed. Because of this work, fewer people destroyed their health and their relationships chasing a definition of success that was never theirs." }
   ];
 
   history = demoHistory;
-  questionCount = 32;
+  questionCount = 37;
   updateProgress();
 
   const typing = showTyping();
